@@ -1,0 +1,172 @@
+<project name="jsspec" basedir="." default="build">
+    <!-- Establish basedir, in case imported -->
+    <dirname property="jsspec.home" file="${ant.file.jsspec}"/>
+
+    <!-- Allow the user to customise the build with their own uniquely named properties file -->
+    <property file="${jsspec.home}/${user.name}.properties"/>
+
+    <property name="lib" value="${jsspec.home}/lib"/>
+    <property name="src" value="${jsspec.home}/src/main"/>
+    <property name="java.test.src" value="${jsspec.home}/src/test/java"/>
+    <property name="java.src" value="${src}/java"/>
+    <property name="resources.src" value="${src}/resources"/>
+
+    <property name="target" value="${jsspec.home}/target"/>
+    <property name="classes" value="${target}/classes"/>
+    <property name="classes.test" value="${target}/test-classes" />
+
+    <property name="reports" value="reports" />
+    <property name="reports.junit.data" value="${reports}/junit/data" />
+	
+	<property name="stop.port" value="8079"/>
+	<property name="stop.key" value="secret"/>
+	
+    <path id="classpath">
+        <fileset dir="${lib}" includes="*.jar"/>
+    </path>
+	<path id="targetclasspath"><pathelement location="target/classes"/></path>
+    <path id="classpath.test">
+        <path refid="classpath" />
+        <pathelement location="${classes.test}" />
+        <pathelement path="${resources.src}" />
+    </path>
+
+    <target name="clean-build" depends="clean, build"/>
+
+    <target name="clean" description="Cleans the result of a previous build">
+        <delete dir="${target}"/>
+    </target>
+
+    <target name="build" description="Builds the js-client project"
+            depends="compile, jar"/>
+
+    <target name="compile" description="Compiles Java sources" 
+            unless="skip.compile">
+        <mkdir dir="${classes}" />
+        <javac srcdir="${java.src}" destdir="${classes}" debug="true" classpathref="classpath" />
+        <copy todir="${classes}" >
+            <fileset dir="${resources.src}">
+                <include name="**/*.*"/>
+            </fileset>
+        </copy>
+    </target>
+	
+	<target name="setupReportDir">
+        <delete dir="${reports.junit.data}" failonerror="false" />
+        <mkdir dir="${reports.junit.data}" />
+	</target>
+	
+	<macrodef name="browse">
+		<attribute name="file"/>
+		<sequential>
+			<exec dir="${basedir}" executable="rundll32.exe">
+					<!-- IE7 
+					<arg line="ieframe.dll,OpenURL"/>
+					-->
+					<arg line="url.dll, FileProtocolHandler"/>
+					<arg line="@{file}"/>
+			</exec>
+		</sequential>
+	</macrodef>
+		
+    <target name="test" depends="setupReportDir, compile" unless="notest">
+    	<browse file=" http://localhost:9080/jsspec/DemoSpec.html?uploadurl=/jsspec/upload&amp;autorun=all&amp;runlinks=all&amp;autoclose=true"/>
+        <junit printsummary="yes" haltonfailure="no"
+               failureproperty="tests.failed">
+            <classpath refid="classpath.test" />
+            <formatter type="xml" />
+            <batchtest fork="no" todir="${reports.junit.data}"
+                       failureproperty="tests.failed">
+                <fileset dir="${java.test.src}">
+                    <include name="**/*Test*.java" />
+                    <exclude name="**/AllTests.java" />
+                </fileset>
+            </batchtest>
+        </junit>
+    	<waitfor maxwait="1" maxwaitunit="minute" checkevery="5" checkeveryunit="second">
+    		<and>
+    		<available file="${reports.junit.data}/TEST-jsspec.DemoSpec.xml"/>
+        	<available file="${reports.junit.data}/TEST-jsspec.ThirdSpec.xml"/>
+    		</and>
+		</waitfor>
+    	<available file="${reports.junit.data}/FAILURE-jsspec.DemoSpec.xml" property="tests.failed"/>
+    	<available file="${reports.junit.data}/FAILURE-jsspec.ThirdSpec.xml" property="tests.failed"/>
+        <fail if="tests.failed" message="Some unit tests failed" />
+    </target>
+    
+	<target name="jar" depends="compile">
+		<jar destfile="${target}/jsspec-extras.jar">
+			<fileset dir="${classes}">
+			    <include name="**/*.class"/>
+			</fileset>
+			<fileset dir="${resources.src}">
+			</fileset>
+		</jar>
+	</target>
+
+	<macrodef name="extras-start">
+		<attribute name="arg1" default=""/>
+		<attribute name="arg2" default=""/>
+		<attribute name="jvmarg1" default=""/>
+		<attribute name="jvmarg2" default=""/>
+		<sequential>
+			<property name="extras.port.prop" value=""/>
+			<property name="extras.user.prop" value=""/>
+			<property name="extras.pass.prop" value=""/>
+			<condition property="extras.port.prop" value="-Dextras.port=${extras.port}">
+				<isset property="extras.port" />
+			</condition>
+			<condition property="extras.user.prop" value="-Dextras.user=${extras.user}">
+				<isset property="extras.user" />
+			</condition>
+			<condition property="extras.pass.prop" value="-Dextras.pass=${extras.pass}">
+				<isset property="extras.pass" />
+			</condition>
+			<!--<exec executable="java">-->
+				<!--<arg value="-cp target/jsspec-extras.jar;lib/jetty-6.1.7.jar;lib/jetty-util-6.1.7.jar;lib/servlet-api-2.5-6.1.7.jar"/>-->
+				<!--<arg value="-Dfile.encoding=UTF-8" />-->
+				<!--<arg value="-DSTOP.PORT=8079"/>-->
+				<!--<arg value="-DSTOP.KEY=secret"/>-->
+				<!--<arg value="jsspec.extras.Main"/>-->
+				<!--<arg value="@{arg1}"/>-->
+			<!--</exec>-->
+
+			<java classname="jsspec.extras.Main" classpath="target/jsspec-extras.jar:lib/jetty-6.1.7.jar:lib/jetty-util-6.1.7.jar:servlet-api-2.5-6.1.7.jar" fork="true" clonevm="true" dir="${jsspec.home}">
+				<classpath>
+					<pathelement location="${target}/jsspec-extras.jar"/>
+					<pathelement location="${lib}/jetty-6.1.7.jar"/>
+					<pathelement location="${lib}/jetty-util-6.1.7.jar"/>
+					<pathelement location="${lib}/servlet-api-2.5-6.1.7.jar"/>
+				</classpath>
+				<jvmarg value="-Dfile.encoding=UTF-8" />
+				<jvmarg value="-DSTOP.PORT=8079"/>
+				<jvmarg value="-DSTOP.KEY=secret"/>
+				<!-- <jvmarg value="-DDEBUG"/> -->
+				<jvmarg value="${extras.port.prop}"/>
+				<jvmarg value="${extras.user.prop}"/>
+				<jvmarg value="${extras.pass.prop}"/>
+				<arg value="@{arg1}"/>
+				<arg value="@{arg2}"/>
+				<jvmarg value="@{jvmarg1}"/>
+				<jvmarg value="@{jvmarg2}"/>
+			</java>
+		</sequential>
+	</macrodef>
+
+	<target name="extras-start" depends="extras-stop">
+		<extras-start arg1="src/main/jetty-extras.xml"/>
+	</target>
+	
+	<target name="extras-check-status">
+	    <condition property="extras.started">
+	        <socket server="localhost" port="9080"/>
+	    </condition>
+	</target>
+	
+	<taskdef resource="tasks.properties" classpathref="targetclasspath"/>
+	
+	<target name="extras-stop" depends="extras-check-status" if="extras.started">
+		<stopextras port="${stop.port}" key="${stop.key}"/>
+	    <sleep seconds="2"/>
+	</target>
+</project>

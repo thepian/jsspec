@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Second Spec</title>
+
+<!-- core files required by JsSpec -->
+<script type="text/javascript" src="/jsspec/JSSpec.js?autorun=false&uploadurl=/jsspec/upload">
+</script>
+<link rel="shortcut icon" href="about:blank" type="plain/text">
+
+<style type="text/css">
+html { _overflow-y:auto; }
+body { 	overflow-y:auto; font-family: "Lucida Grande", Helvetica, sans-serif; font-size: .8em; }
+.bulk { overflow-y:auto; height:100%; }
+table.options { background-color: #AAA; }
+table.options col.first { border-right: 1px dotted black; }
+table.options col.last { border-left: 1px dotted black; }
+dt,dd { position:relative;zoom:1; }
+.overlapped { position:absolute;left:0;top:0; }
+</style>
+
+<!-- script tag used to define the unit tests for this page -->
+<script language="JavaScript" type="text/javascript">
+
+describe('Initial values', {
+	'before':function(){
+		document.getElementById("form_title").value = "Mr";
+	},
+	'1. fail not as expected': function() {
+		value_of_element("#form_first").should_be("");
+		value_of_element("#form_second").should_be("a");
+		value_of_element("input.first-name").should_be("");
+		value_of_element("form input.second-name").should_be("b");
+	},
+	'2. succeed label and comment as expected' : function() {
+		value_of_element("#form_title").should_be("Mr");
+		value_of_element("#form_comment").should_be("Some comment");
+		value_of_element("form label.first-name").should_be("Name");
+	}
+});
+
+describe('Changed values', {
+	'1. fail change value' : function() {
+		value_of_element("#form_first").within(0.9).should_be("a");
+		document.getElementById("form_first").value = "b";
+	},
+	'2. succeed delayed change': function() {
+		setTimeout(function() {
+			document.getElementById("form_first").value = "....";
+		},200);
+		value_of_element("#form_first").within(0.9).should_be("....");
+	},
+	'3. succeed input text' : function() {
+		value_of_element("#form_title").within(0.9).should_be("Mr!");
+		value_of_element("#form_title").input_text("Mr!",true);
+		value_of_element("#form_second").input_text("def",true);
+		value_of_element("input.first-name").input_text("ghj",true);
+	},
+	'4. succeed checking': function() {
+		//value_of_element("#form_checked",{left:0,right:"50%",base:"self,parent,body,browser"}).input_select({checked:true,name:"checked",caption:"Checked"});
+		value_of_element("#form_comment").within(0.2).should_match(/New comment/);
+		value_of_element("#form_comment").input_text("New comment just entered",true);
+		//TODO 'input[type="checkbox"]'
+		value_of_element('input',{point:[80,160]}).input_state({checked:true,disabled:false,readonly:false});
+		value_of_element('input',{point:[130,160]}).input_state({checked:false,disabled:true,readonly:false});
+	},
+	'5. button clicking': function() {
+		value_of_element("button",{match:/Button/,index:0}).within(0.5).should_be("Button clicked");
+		value_of_element("button",{match:/Button/,index:0}).click();
+	},
+	'6. pinpointing':function() {
+		value_of_element("div.overlapped",{visible:true}).should_be("2");
+	}
+})
+</script>
+
+	</head>
+	<body>
+	<form>
+	<dl>
+	<dt><label for="first" class="first-name">Name</label></dt>
+	<dd><input size="4" type="text" id="form_title" name="title" value="Mr">
+	<input type="text" id="form_first" name="first" class="first-name" value=""><input type="text" id="form_second" name="second"  class="second-name" value=""></dd>
+	<dt>Read only</dt>
+	<dd><input type="text" id="form_text_readonly" value"..." readonly> <input type="text" id="form_text_disabled" value="...." disabled></dd>
+	<dt>Checked</dt>
+	<dd><input type="checkbox" name="checked" id="form_checked" checked> <input type="checkbox" id="form_unchecked">
+	<input type="checkbox" id="form_check_disabled" disabled> <input type="checkbox" id="form_check_readonly" readonly>
+	</dd>
+	<dt>Comment</dt>
+	<dd><textarea id="form_comment" name="comment" cols="45">Some comment</textarea></dd>
+	<dt>Agreement</dt>
+	<dd><input id="form_agree" name="agree" type="checkbox" checked></dd>
+	<dd><input name="choice" type="radio" value="Choice One"><input name="choice" type="radio" value="Choice Two"></dd>
+	<dd><button accesskey="b" onclick="this.innerHTML='Button clicked';return false;">Button</button> <button disabled>Disabled</button></dd>
+	<dt>Overlapped</dt>
+	<dd><div class="overlapped" style="visibility:hidden">1</div><div class="overlapped" style="visibility:visible;">2</div><div class="overlapped" style="display:none;">3</div></dd>
+	</dl>
+	</form>
+	</body>
+</html>

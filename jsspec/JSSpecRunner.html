@@ -1,0 +1,1548 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSSpec Master</title>
+<style type="text/css" >
+
+html {  overflow: hidden;}
+
+body.JSSpecResults {
+	font-family: "Lucida Grande", Helvetica, sans-serif;
+	left: 0.25em; right: 0.25em;
+	position:absolute;
+	top:0; bottom:0;
+}
+
+#details {
+	position:relative;
+	padding-left:25%;
+	background-color:white;
+	/*filter:alpha(opacity=90);*/ 
+	-moz-opacity:0.9; 
+	opacity:0.9; 
+}
+#list {
+  padding: 0;  margin: 0;
+  position: absolute;
+  top: 0;  left: 0px;  bottom: 0px;
+  _left:-25%;
+  overflow: auto;
+  width: 25%;
+	border: 1px dotted #AAA;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+}
+
+#log {
+  padding: 0;  margin: 0;
+  position: relative;
+  left: 0;  width:auto;
+  overflow: auto;
+	border: 1px dotted #AAA;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+}
+
+#help {
+	position:relative; overflow:auto;
+	left:0; right:0; width:auto;
+	padding: 4px;
+	background-color:#2244AA;
+	color:#CCC;
+	border: 1px dotted #AAA;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	font-size: 0.85em;
+	/*filter:alpha(opacity=90);*/ 
+	-moz-opacity:.9; opacity:.9; 
+}
+#help div { padding: 4px; position:relative; }
+#help h2 { color: white;}
+
+#examples {
+	position:relative; overflow:auto;
+	left:0; right:0; width:auto;
+	padding: 4px;
+	background-color:#22AAAA;
+	color:#CCC;
+	border: 1px dotted #AAA;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	font-size: 0.85em;
+	/*filter:alpha(opacity=90);*/ 
+	-moz-opacity:.9; opacity:.9; 
+}
+
+#upload_form { visibility:hidden; width:1px; height:1px; border:0; }
+#upload_iframe { visibility:hidden; width:1px; height:1px; border:0; }
+
+/*
+You can use this file as is or as a starting point for you own styling
+*/
+
+pre code[class]:after {
+  content: 'highlight: ' attr(class);
+  display: block; text-align: right;
+  font-size: smaller;
+  color: #CCC; background: white;
+  border-top: solid 1px;
+  padding-top: 0.5em;
+}
+
+pre code {
+  display: block;
+  background: #F0F0F0;
+}
+
+pre code, 
+.ruby .subst {
+  color: black;
+}
+
+.string,
+.function .title,
+.class .title, 
+.tag .attribute .value,
+.css .rules .value,
+.preprocessor,
+.ruby .symbol,
+.built_in,
+.sql .aggregate,
+.django .template_tag,
+.django .variable,
+.smalltalk .class {
+  color: #800;
+}
+
+.comment,
+.java .annotation,
+.template_comment {
+  color: #888;
+}
+
+.number,
+.regexp,
+.javascript .literal,
+.smalltalk .symbol,
+.smalltalk .char {
+  color: #080;
+}
+
+.javadoc,
+.ruby .string,
+.python .decorator,
+.django .filter .argument,
+.smalltalk .localvars,
+.smalltalk .array,
+.css .attr_selector,
+.xml .pi {
+  color: #88F;
+}
+
+.keyword,
+.css .id,
+.phpdoc,
+.function .title,
+.class .title,
+.vbscript .built_in,
+.sql .aggregate,
+.rsl .built_in,
+.smalltalk .class,
+.xml .tag .title {
+  font-weight: bold;
+}
+
+/* --------------------
+ * @Decorations and colors
+ */
+* {
+	padding: 0;
+	margin: 0;
+	font-family: "Lucida Grande", Helvetica, sans-serif;
+}
+
+div#totals li,
+div#list li,
+div#log li {
+	list-style: none;
+}
+div#totals li { font-size:.8em; }
+
+/* hiding subtitles */
+#log h2, #list h2 {
+	display: none;
+}
+
+body.JSSpecResults div#totals { overflow:hidden; }
+body.JSSpecResults div#totals h1 { float:left; font-size: 1.2em; height: 40px; line-height:40px; _height:36px; _line-height:36px; padding:0 0 0 0.25em; }
+
+body.JSSpecResults div#totals ul { height: 40px; float:left; }
+body.JSSpecResults div#totals ul li {
+	float: left;
+	vertical-align:bottom; line-height:1.5em;
+	padding: 0.35em 0em 0.3em 0.6em;
+}
+
+div#totals button { 
+	line-height:2em; _line-height:1.5em; 
+	-webkit-appearance:push-button; -moz-appearance:toolbarbutton;
+}
+
+body.JSSpecResults p.ref-links {
+	/*
+	position:absolute;
+	right:5px; top:3px;
+	*/
+	float:right; margin-right:5px;
+	text-align:right;
+	font-size: 0.75em;
+}
+
+body.JSSpecResults hr { clear:both; width:100%; height:1px; display:block; position:relative; }
+
+/* spec container */
+ul.specs {	margin: 0.5em;}
+ul.specs li {	margin-bottom: 0.1em;}
+
+/* spec title */
+ul.specs li h3 {
+	font-weight: bold;
+	font-size: 0.75em;
+	padding: 0.2em 1em;
+	cursor: pointer;
+	_cursor: hand;
+}
+
+/* example container */
+ul.examples li {
+	border-style: solid;
+	border-width: 0px 0px 1px 5px;
+	margin: 0.2em 0em 0.2em 1em;
+}
+
+/* example title */
+ul.examples li h4 {
+	font-weight: normal;
+	font-size: 0.75em;
+	margin-left: 1em;
+}
+
+/* example explaination */
+ul.examples li div { padding: 1em 2em; font-size: 0.75em;
+}
+
+/* styles for ongoing, success, failure, error */
+div.success, div.success a {
+	color: #FFFFFF;
+	background-color: #65C400;
+}
+
+ul.specs li.success h3, ul.specs li.success h3 a {
+	color: #FFFFFF;
+	background-color: #65C400;
+}
+
+ul.examples li.success, ul.examples li.success a {
+	color: #3D7700;
+	background-color: #DBFFB4;
+	border-color: #65C400;
+}
+
+div.exception, div.exception a {
+	color: #FFFFFF;
+	background-color: #C20000;
+}
+
+ul.specs li.exception h3, ul.specs li.exception h3 a {
+	color: #FFFFFF;
+	background-color: #C20000;
+}
+
+ul.examples li.exception, ul.examples li.exception a {
+	color: #C20000;
+	background-color: #FFFBD3;
+	border-color: #C20000;
+}
+
+div.ongoing, div.ongoing a {
+	color: #000000;
+	background-color: #FFFF80;
+}
+
+ul.specs li.ongoing h3, ul.specs li.ongoing h3 a {
+	color: #000000;
+	background-color: #FFFF80;
+}
+
+ul.examples li.ongoing, ul.examples li.ongoing a {
+	color: #000000;
+	background-color: #FFFF80;
+	border-color: #DDDD00;
+}
+
+
+
+/* --------------------
+ * values
+ */
+.number_value, .string_value, .regexp_value, .boolean_value, .dom_value {
+	font-family: monospace;
+	color: blue;
+}
+.object_value, .array_value {
+	line-height: 2em;
+	padding: 0.1em 0.2em;
+	margin: 0.1em 0;
+}
+.date_value {
+	font-family: monospace;
+	color: olive;
+}
+.undefined_value, .null_value {
+	font-style: italic;
+	color: blue;
+}
+.dom_attr_name {
+}
+.dom_attr_value {
+	color: red;
+}
+.dom_path {
+	font-size: 0.75em;
+	color: gray;
+}
+strong {
+	font-weight: normal;
+	background-color: #FFC6C6;
+}
+
+div#help ol { list-style: upper-latin; }
+
+</style>
+<script type="text/javascript" src="diff_match_patch.js"></script>
+<script type="text/javascript" src="highlight.js"></script>
+<script type="text/javascript" src="javascript.js"></script>
+<script type="text/javascript">
+/**
+ * Set up JSSpec as a public API on the runner window/iframe.contentWindow.
+ * Spec pages access this instance for common runtime coordination and functionality
+ * 
+ * @param {DOMWindow} runnerWindow Takes the page window as parameter to ensure that the correct window is added to the scope, for consistency across browsers.
+ */
+(function(runnerWindow){
+	
+	var EMPTY_FUNCTION = function() {};
+	EMPTY_FUNCTION.empty = true;
+		
+	var Browser = {
+			Trident: navigator.appName == "Microsoft Internet Explorer",
+			Webkit: navigator.userAgent.indexOf('AppleWebKit/') > -1,
+			Gecko: navigator.userAgent.indexOf('Gecko') > -1 && navigator.userAgent.indexOf('KHTML') == -1,
+			Presto: navigator.appName == "Opera"
+	};
+		
+	var JSSpec = {
+		
+		Browser: Browser,
+		
+		options: {},
+		
+		/**
+		 * Hardcoded defaults. Can be overridden for a suite or spec page by adding options
+		 * to the JSSpec.js script link.
+		 */
+		defaultOptions : {
+			rerun: null,
+			autorun: 1,
+			autocollapse: 1,
+			autoresults: 0,
+			autototals: 1,
+			runlinks: 0,
+			debugging: false,
+			uploadurl : null,
+			runnername: "JSSpecRunner.html",
+			showhelp: false
+		},
+		
+		describeOptions : {
+			rerun: "Rerun a specific Spec, skipping other defined Specs",
+			autorun: "Run the specs defined in the page. Specify 'all' to run linked specs as well. Specify 'links' to only run linked specs.",
+			autocollapse: "Only show totals after a run without failures",
+			autoresults: "Show results once a run is finished",
+			autototals: "Show totals above the regular page content. Use 'hover' to show totals hovering over page rather than as part of page.",
+			runlinks: "Run the specs linked by the page through LINK/A tags. If 1/true is specified all links are loaded. Specify a name to only run the specs of that named revision(rev attribute) ",
+			debugging: "The specification is run in a debugger, so onerror isn't used",
+			uploadurl: "Defines the base url for result uploads",
+			runnername: "Name of the runner html file loaded by JSSpec.js from same directory (pass as JSSpec.js URL parameter)",
+			showhelp: "Show a help window describing how to use JSSpec",
+			hash: "Name if an anchor, specified after the # in the url"
+		},
+		
+		/**
+		 * Unique spec page number assigned to implementations of the Spec class
+		 * @type Number
+		 */
+		specPageId : 0,
+		
+		/**
+		 * Utilities
+		 */
+		util : {
+			escapeTags: function(string) {
+				return string.replace(/</img, '&lt;').replace(/>/img, '&gt;');
+			},
+			
+			/**
+			 * config.hideMillis = false
+			 * config.maxLevels = 2
+			 * @param {Object} millis
+			 * @param {Object} config
+			 */
+			formatDateDiff : function(millis,config) {
+				config = config || {};
+				var maxLevels = config.maxLevels || 2;
+				var secs = Math.floor(millis / 1000)
+				var minutes = Math.floor(millis / 60000);
+				var hours = Math.floor(millis / 3600000);
+				var days = Math.floor(hours / 24);
+				var weeks = Math.floor(days / 7);
+			
+				var _millis = millis % 1000;
+				var _secs = secs % 60;
+				var _minutes = minutes % 60;
+				var _hours = hours % 24;
+				var _days = days % 7;
+			
+				var res = [];
+				if (days) res.push(_days+" days");
+				if (hours) res.push(_hours+" hours");
+				if (minutes) res.push(_minutes+" minutes");
+				if (secs) res.push(_secs+" secs");
+				if (!config.hideMillis) res.push(_millis+" millis");
+				if (res.length > maxLevels) res.length = maxLevels;
+			
+				return res.join(" ");
+			},
+	
+			/**
+			 * Copy properties of source object to a new object. If source isn't a
+			 * function or object, a blank object is returned.
+			 * 
+			 * @param {Object} src Source object
+			 * @return new object with properties of src
+			 */
+			shallowClone : function(src) {
+				var ret = {};
+				var t = typeof src;
+				if (t == "object" || t == "function") for(var n in src) ret[n] = src[n];
+				return ret;
+			},
+	
+			/**
+			 * Parse the search parameters from the location of a specific window.
+			 *
+			 * @param {Map} win The window. Default is top.
+			 * @param {Map} defaults The options will get these values by default.
+			 */
+			parseOptions: function(win,defaults) {
+				var options = this.shallowClone(defaults) || {};
+	
+				options.hash = (win || top).location.hash.replace(/#/,"");
+				var url = (win || top).location.href;
+				var queryIndex = url.indexOf('?');
+				if(queryIndex == -1) return options;
+	
+				var query = url.substring(queryIndex + 1);
+				var pairs = query.split('&');
+				for(var i = 0; i < pairs.length; i++) {
+					var tokens = pairs[i].split('=');
+					tokens[1] = decodeURIComponent(tokens[1]);
+					if (tokens[1] == "false") tokens[1] = false;
+					if (tokens[1] == "0") tokens[1] = 0;
+					options[tokens[0]] = tokens[1];
+				}
+	
+				return options;
+			},
+	
+			/**
+			 * Takes two sets of un-encoded value maps and merges them into a single
+			 * map which will return the equivalent of <pre>location.search + location.hash</pre>
+			 *
+			 * @param {Map} oldOptions Old options from the exiting page running
+			 * @param {Map} newOptions New options that extends/overrides existing
+			 * @return A map with resulting options and a toString that produces the URI search & hash parts
+			 */
+			newLinkOptions : function(oldOptions,newOptions) {
+				var res = this.shallowClone(oldOptions);
+				for(var n in newOptions) {
+					res[n] = newOptions[n];
+				}
+	
+				res.toString = function() {
+					var params = [];
+					for(var n in this) {
+						var v = this[n];
+						if (n == "hash") continue;
+						if (typeof v != "function" && typeof v != "undefined") params.push(n + "=" + encodeURIComponent(v));
+					}
+	
+					return "?" + params.join("&") + ( this.hash? ("#"+this.hash.replace(/#/,"")):"");
+				};
+				return res;
+			},
+			
+			/**
+			 * 
+			 * @param {Object} options
+			 * @param {Object} defaults
+			 * @param {Map} descriptions The options will get these descriptions when displayed
+			 */
+			formatOptionsAsTable : function(options,defaults,descriptions) {
+				var res = [];
+				res.push('<table class="options">');
+				res.push('<col class="first"><col><col><col class="last">');
+				res.push('<thead><tr><th>Option</th><th>Value</th><th>Default</th><th>Descriptions</th></tr></thead>');
+				res.push('<tbody>');
+				for(var name in options) {
+					res.push("<tr><td>");
+					res.push(name);
+					res.push("</td><td>");
+					res.push(options[name]);
+					res.push("</td><td>");
+					res.push(defaults[name] || "null");
+					res.push("</td><td>");
+					res.push(descriptions[name] || "");
+					res.push("</td></tr>");
+				}
+				res.push('</tbody></table>');
+				return res.join("");
+			},
+	
+			correctHtmlAttrQuotation: function(html) {
+				html = html.replace(/(\w+)=['"]([^'"]+)['"]/mg,function (str, name, value) {return name + '=' + '"' + value + '"';});
+				html = html.replace(/(\w+)=([^ '"]+)/mg,function (str, name, value) {return name + '=' + '"' + value + '"';});
+				html = html.replace(/'/mg, '"');
+	
+				return html;
+			},
+	
+			sortHtmlAttrs: function(html) {
+				var attrs = [];
+				html.replace(/((\w+)="[^"]+")/mg, function(str, matched) {
+					attrs.push(matched);
+				});
+				return attrs.length == 0 ? "" : " " + attrs.sort().join(" ");
+			},
+	
+			sortStyleEntries: function(styleText) {
+				var entries = styleText.split(/; /);
+				return entries.sort().join("; ");
+			},
+			escapeHtml: function(str) {
+				if(!this._div) {
+					this._div = document.createElement("DIV");
+					this._text = document.createTextNode('');
+					this._div.appendChild(this._text);
+				}
+				this._text.data = str;
+				return this._div.innerHTML;
+			},
+			isDomNode: function(o) {
+				// TODO: make it more stricter
+				return (typeof o == 'object') && (typeof o.nodeName == 'string') && (typeof o.nodeType == 'number');
+			},
+			inspectDomPath: function(o) {
+				var sb = [];
+				while(o && o.nodeName != '#document' && o.parent) {
+					var siblings = o.parentNode.childNodes;
+					for(var i = 0; i < siblings.length; i++) {
+						if(siblings[i] == o) {
+							sb.push(o.nodeName + (i == 0 ? '' : '[' + i + ']'));
+							break;
+						}
+					}
+					o = o.parentNode;
+				}
+				return sb.join(" &gt; ");
+			},
+			inspectDomNode: function(o) {
+				if(o.nodeType == 1) {
+					var nodeName = o.nodeName.toLowerCase();
+					var sb = [];
+					sb.push('<span class="dom_value">');
+					sb.push("&lt;");
+					sb.push(nodeName);
+	
+					var attrs = o.attributes;
+					for(var i = 0; i < attrs.length; i++) {
+						if(
+							attrs[i].nodeValue &&
+							attrs[i].nodeName != 'contentEditable' &&
+							attrs[i].nodeName != 'style' &&
+							typeof attrs[i].nodeValue != 'function'
+						) sb.push(' <span class="dom_attr_name">' + attrs[i].nodeName.toLowerCase() + '</span>=<span class="dom_attr_value">"' + attrs[i].nodeValue + '"</span>');
+					}
+					if(o.style && o.style.cssText) {
+						sb.push(' <span class="dom_attr_name">style</span>=<span class="dom_attr_value">"' + o.style.cssText + '"</span>');
+					}
+					sb.push('&gt;');
+					sb.push(this.escapeHtml(o.innerHTML));
+					sb.push('&lt;/' + nodeName + '&gt;');
+					sb.push(' <span class="dom_path">(' + this.inspectDomPath(o) + ')</span>' );
+					sb.push('</span>');
+					return sb.join("");
+				} else if(o.nodeType == 3) {
+					return '<span class="dom_value">#text ' + o.nodeValue + '</span>';
+				} else {
+					return '<span class="dom_value">UnknownDomNode</span>';
+				}
+			},
+			
+			typeMap: {
+			},
+				
+			extendTypeMap: function(someWindow) {
+				this.typeMap[someWindow.String] = "String";		
+				this.typeMap[someWindow.Number] = "Number";		
+				this.typeMap[someWindow.Date] = "Date";		
+				this.typeMap[someWindow.Array] = "Array";		
+				this.typeMap[someWindow.Boolean] = "Boolean";		
+				this.typeMap[someWindow.RegExp] = "RegExp";		
+			},
+			
+			inspect: function(o, dontEscape, emphasisKey) {
+				var sb, inspected;
+	
+				if(typeof o == 'undefined') return '<span class="undefined_value">undefined</span>';
+				if(o === null) return '<span class="null_value">null</span>';
+				
+				var te = this.typeMap[o.constructor];
+				if(te == 'String') return '<span class="string_value">"' + (dontEscape ? o : this.escapeHtml(o)) + '"</span>';
+	
+				if(te == 'Date') {
+					return '<span class="date_value">"' + o.toString() + '"</span>';
+				}
+	
+				if(te == 'Number') return '<span class="number_value">' + (dontEscape ? o : this.escapeHtml(o)) + '</span>';
+	
+				if(te == 'Boolean') return '<span class="boolean_value">' + o + '</span>';
+	
+				if(te == 'RegExp') return '<span class="regexp_value">' + this.escapeHtml(o.toString()) + '</span>';
+	
+				if(this.isDomNode(o)) return this.inspectDomNode(o);
+	
+				if(te == 'Array' || typeof o.length != 'undefined') {
+					sb = [];
+					for(var i = 0; i < o.length; i++) {
+						inspected = this.inspect(o[i]);
+						sb.push(i == emphasisKey ? ('<strong>' + inspected + '</strong>') : inspected);
+					}
+					return '<span class="array_value">[' + sb.join(', ') + ']</span>';
+				}
+	
+				// object
+				sb = [];
+				for(var key in o) {
+					if(key == 'should') continue;
+	
+					inspected = this.inspect(key) + ":" + this.inspect(o[key]);
+					sb.push(key == emphasisKey ? ('<strong>' + inspected + '</strong>') : inspected);
+				}
+				return '<span class="object_value">{' + sb.join(', ') + '}</span>';
+			}
+		}	
+	};
+
+	JSSpec.runnerOptions = JSSpec.util.parseOptions(runnerWindow,JSSpec.defaultOptions);
+	/* Parse options on top window url and top window script url */	
+	JSSpec.options = JSSpec.util.parseOptions(top,JSSpec.runnerOptions);
+
+	JSSpec.util.extendTypeMap(runnerWindow);
+	
+	
+	/**
+	 * Runner
+	 * For each Specification Page a Runner is created with a pulse. The pulse will not execute
+	 * before the Runner iframe is loaded.
+	 */
+	function Runner(specPage) {
+		this.startTime = new Date();
+		this.urlPath = specPage.specWindow.location.pathname;
+		this.totalExamples = 0;
+		this.specs = [];
+		this.outstanding = [];
+		this.delayed = [];
+		this.specsMap = {};
+		this.addAllSpecs(specPage.specs || []);
+		this.location = specPage.location;
+		this.scriptText = specPage.scriptText;
+		if (this.runners.length > 0) {
+			this.haltRun = true;
+			this.queue.push(this);
+		}
+		specPage.startPulse(this); // this is where it all starts
+	}
+	JSSpec.Runner = Runner;
+	
+	/**
+	 * Runners will execute when not halted.
+	 */
+	Runner.prototype.haltRun = true;
+	
+	/**
+	 * Runner instances that are queued to be run. When the currently executing
+	 * runner is ended it pops one from the queue and lets it run.
+	 */
+	Runner.prototype.queue = [];
+	
+	/**
+	 * All active runners
+	 */
+	Runner.prototype.runners = [];
+	
+	/**
+	 * One time call-back
+	 */
+	Runner.prototype.onRunnerStart = function() {
+		this.started = new Date();
+		JSSpec.log.onRunnerStart(this);
+		this.onRunnerStart = EMPTY_FUNCTION;
+	};
+	
+	/**
+	 * One time call-back
+	 */
+	Runner.prototype.onRunnerEnd = function() {
+		this.ended = new Date();
+		JSSpec.log.onRunnerEnd(this);
+		this.onRunnerEnd = EMPTY_FUNCTION;
+		if (!this.excepted) {
+			var next = this.queue.pop();
+			if (next) {
+				next.haltRun = false;
+				return;	
+			}
+		}
+		JSSpec.log.onRunnersEnd(this);
+	};
+	
+	Runner.prototype.addAllSpecs = function(specs) {
+		for(var i = 0, l = specs.length; i < l; i++) {
+			this.addSpec(specs[i]);
+			this.addOutstanding(specs[l - i - 1]);
+		}
+	};
+	
+	Runner.prototype.addSpec = function(spec) {
+		//TODO if not spec && spec.id log an error
+		this.specs.push(spec);
+		this.specsMap[spec.getId()] = spec;
+		this.totalExamples += spec.getExamples().length;
+	};
+	
+	Runner.prototype.addOutstanding = function(spec) {
+		var composite = new CompositeExecutor(this);
+		composite.spec = spec;									// Adding spec references to Executor
+		composite.id = spec.getId();
+		
+		composite.addExecutor(new Executor(this,JSSpec.log, "onSpecEnd",[spec,this]));
+		if (spec.hasNonEmptyFunction("afterAll")) composite.addExecutor(new Executor(this,spec,"run", ["afterAll"]));
+		
+		for(var i = spec.examples.length-1; i >= 0; --i) {
+			composite.addExampleExecutor(spec.examples[i]);
+		}
+
+		var runner = this;
+		function onException(executor,ex) {
+			spec.exception = ex;
+			JSSpec.log.onSpecEnd(spec,runner);
+			this.parent.stack.length = 0;
+		}		
+		if (spec.hasNonEmptyFunction("beforeAll")) composite.addExecutor(new Executor(this,spec,"run",["beforeAll"], null, onException));  // upon failure skip the examples
+		composite.addExecutor(new Executor(this,JSSpec.log,"onSpecStart",[spec,this]));
+
+		this.outstanding.push(composite);
+	};	
+
+	
+	Runner.prototype.getSpecById = function(id) {
+		return this.specsMap[id];
+	};
+	
+	Runner.prototype.getSpecs = function() {
+		return this.specs;
+	};
+	
+	Runner.prototype.hasException = function() {
+		return this.getTotalFailures() > 0 || this.getTotalErrors() > 0;
+	};
+	
+	Runner.prototype.getTotalFailures = function() {
+		var failures = 0;
+		for(var i = 0, l = this.specs.length; i < l; i++) {
+			failures += this.specs[i].getTotalFailures();
+		}
+		return failures;
+	};
+	
+	Runner.prototype.getTotalErrors = function() {
+		var errors = 0;
+		for(var i = 0, l = this.specs.length; i < l; i++) {
+			errors += this.specs[i].getTotalErrors();
+		}
+		return errors;
+	};
+	
+	/**
+	 * Executor
+	 * @param {function|string} run A string will refer to a method on instance, that are expected to do their own exception handling.
+	 * 		A function will be called with as a method of the Executor within a try catch block.
+	 * @param {Array} params Parameters passed to the main function, with this executor as an extra parameter.
+	 */
+	function Executor(parent, instance, main, params, onSuccess, onException) {
+		this.runner = parent.runner || (parent instanceof Runner? parent : null);
+		this.instance = instance;
+		this.main = main;
+		if (params == null) params = [];
+		this.params = params.concat(this);
+		var mainFunc;
+		if (typeof main == "string") { mainFunc = instance[main]; this.run = this.runMethod; }
+		else { mainFunc = main; this.run = this.runFunction;}
+		this.onSuccess = typeof onSuccess == 'function' ? onSuccess : EMPTY_FUNCTION;
+		this.onException = onException || this.defaultOnException;
+		this.empty = (mainFunc && mainFunc.empty && this.onSuccess.empty);
+		if (this.empty) { this.run = EMPTY_FUNCTION; }
+		this.todo = true; //TODO merge with empty
+	} 
+	JSSpec.Executor = Executor;
+	
+	Executor.prototype.defaultOnException = function(executor, ex) {
+		if (this.instance) this.instance.exception = ex;
+	}
+	
+	/*
+	 * Run main method on instance defined in other frame
+	 */
+	Executor.prototype.runMethod = function() {
+		this.todo = this.instance[this.main].apply(this.instance,this.params);
+		if (this.todo == "sleep") this.runner.finishPulse = true;
+	};	
+
+	/*
+	 * Run main function defined in same frame
+	 */
+	Executor.prototype.runFunction = function() {
+		var result;
+		try {
+			result = this.main.apply(this,this.params);
+			this.onSuccess(this,result);
+			this.todo = false;
+		}
+		catch(ex) {
+			this.exception = ex;
+			this.onException(this, ex);
+			this.onAfterException(this, ex);
+			this.todo = false;
+		}
+	};	
+	
+	Executor.prototype.onAfterException = function(executor,ex) {
+		this.runner.excepted = true;
+	};
+
+	/**
+	 * CompositeExecutor composites one or more executors and execute them sequencially.
+	 */
+	function CompositeExecutor(parent, onSuccess, onException) {
+		this.runner = parent.runner || (parent instanceof Runner? parent : null);
+		this.stack = [];
+		this.onSuccess = typeof onSuccess == 'function' ? onSuccess : EMPTY_FUNCTION;
+		this.onException = typeof onException == 'function' ? onException : EMPTY_FUNCTION;
+	} 
+	JSSpec.CompositeExecutor = CompositeExecutor;
+
+	CompositeExecutor.prototype.addExampleExecutor = function(example) {
+		var composite = new CompositeExecutor(this);
+		function onException(executor, ex) {
+			example.exception = ex;
+		}
+		var parent = this;
+		function onExampleSuccess() {
+			if (this.instance.delayed.length) {
+				composite.addExecutor(new Executor(parent,example,"delayedPulse",[]));
+			}
+		}
+		
+		composite.addExecutor(new Executor(this,JSSpec.log,"onExampleEnd",[example,this.runner]));
+		if (example.hasNonEmptyFunction("after")) composite.addExecutor(new Executor(this,example,"run", ["after"]));
+		composite.addExecutor(new Executor(this,example, "run", ["target"], onExampleSuccess));
+
+		if (example.hasNonEmptyFunction("before")) composite.addExecutor(new Executor(this,example,"run", ["before"], null, function(exec, ex) {
+			example.exception = ex;
+			JSSpec.log.onExampleEnd(example,this.runner);
+			this.parent.stack.length = 0;
+		}));
+		composite.addExecutor(new Executor(this,JSSpec.log,"onExampleStart",[example,this.runner]));
+
+		this.addExecutor(composite);
+	};	
+
+	CompositeExecutor.prototype.addExecutor = function(executor) {
+		if (!executor.empty) {
+			this.todo = true;
+			this.stack.push(executor);
+		}
+	};
+
+	CompositeExecutor.prototype.run = function() {
+		var excepted = false;
+		while (this.stack.length > 0) {
+			var executor = this.stack[this.stack.length-1];
+			if (executor.todo && !executor.empty) {
+				executor.run();
+				if (executor.runner.finishPulse) return;
+				if (executor.exception) {
+					this.onException(executor,executor.exception);
+					excepted = true;
+					this.runner.excepted = true;
+				}
+			} else {
+				this.stack.pop();
+			}
+		}
+		this.todo = false;
+		if (!excepted)		this.onSuccess(this);
+	};
+
+	
+	function blinkTitle(times, title1, title2) {
+		function f() {
+			if(times > 0) {
+				top.document.title = mode ? title1 : title2;
+				mode = !mode;
+				times--;
+			} else {
+				top.document.title = title1;
+				top.clearInterval(interval);
+			}
+		};
+
+		var times = times * 2;
+		var mode = true;
+		var interval = top.setInterval(f, 500);
+		f();
+	}
+	
+	function UploadProp(name,value,templateName) {
+		this.name = name; this.value = value; 
+		this.template = this[templateName || "simple"];
+	}
+	UploadProp.prototype.text = '<input name="{name}" value="{value}" type="text" readonly>';
+	UploadProp.prototype.checkbox = '<input name="{name}" value="{value}" type="checkbox" checkbox="checked" disabled>';
+	UploadProp.prototype.textarea = '<textarea name="{name}">{value}</textarea readonly>';
+	UploadProp.prototype.submit = '<input name="{name}" value="{value}" type="submit" readonly>';
+	UploadProp.prototype.simple = '{name}={value}';
+	
+	UploadProp.prototype.toString = function() { return this.template.replace("{name}",this.name).replace("{value}",this.value); }
+	
+	/**
+	 * Logger
+	 */
+	JSSpec.Logger = function() {
+		this.totalExamples = 0;
+		this.finishedExamples = 0;
+		this.startedAt = null;
+		this.uploadProps = []; // UploadProp instances
+	};
+	
+	JSSpec.Logger.prototype.onRunnerAdded = function(runner) {
+		this.totalExamples += runner.totalExamples;
+		runnerWindow.document.getElementById("total_examples").innerHTML = this.totalExamples;
+	}
+	
+	JSSpec.Logger.prototype.onRunnerStart = function(runner) {
+		this._title = top.document.title; //TODO track the frame we are running on
+	
+		this.startedAt = new Date();
+		this.uploadProps = []; // UploadProp instances
+	
+		var list = runnerWindow.document.getElementById("list");
+		var util = JSSpec.util; //TODO not so nice
+		var customOptions = util.parseOptions(top,{});
+		list.innerHTML = [
+			'<h2>List</h2>',
+			'<ul class="specs">',
+			function() {
+				var specs = runner.getSpecs();
+				var sb = [];
+				for(var i = 0, l = specs.length; i < l; ++i) {
+					var spec = specs[i];
+					sb.push('<li id="spec_' + specs[i].getId() + '_list">'
+						+'<h3><a target="top" href="'+ top.location.pathname 
+						+  util.newLinkOptions(customOptions,{hash: 'spec_' + specs[i].getId()}).toString() + '">'
+						+ util.escapeTags(specs[i].context) + '</a>'
+						+' [<a target="top" href="'+ top.location.pathname 
+						+ util.newLinkOptions(customOptions,{rerun: specs[i].context}).toString() + '">rerun</a>]</h3></li>');
+				}
+				return sb.join("");
+			}(),
+			'</ul>'
+		].join("");
+	
+		var log = runnerWindow.document.getElementById("log");
+		log.innerHTML = [
+			'<h2>Log</h2>',
+			'<ul class="specs">',
+			function() {
+				var specs = runner.getSpecs();
+				var sb = [];
+				for(var i = 0, l = specs.length; i < l; ++i) {
+					var spec = specs[i];
+					sb.push('	<li id="spec_' + specs[i].getId() + '">');
+					sb.push('		<h3>' + util.escapeTags(specs[i].context) + ' [<a href="?rerun=' + encodeURIComponent(specs[i].context) + '">rerun</a>]</h3>');
+					sb.push('		<ul id="spec_' + specs[i].getId() + '_examples" class="examples">');
+					for(var j = 0; j < spec.examples.length; j++) {
+						var example = spec.examples[j];
+						sb.push('			<li id="example_' + example.getId() + '">')
+						sb.push('				<h4>' + util.escapeTags(example.name) + '</h4>')
+						sb.push('			</li>')
+					}
+					sb.push('		</ul>');
+					sb.push('	</li>');
+				}
+				return sb.join("");
+			}(),
+			'</ul>'
+		].join("");
+	
+		// add event handler for toggling
+		var specs = runner.getSpecs();
+		var sb = [];
+		for(var i = 0, l = specs.length; i < l; ++i) {
+			var spec = runnerWindow.document.getElementById("spec_" + specs[i].getId());
+			var title = spec.getElementsByTagName("H3")[0];
+			title.onclick = function(e) {
+				var target = runnerWindow.document.getElementById(this.parentNode.id + "_examples");
+				target.style.display = target.style.display == "none" ? "block" : "none";
+				return true;
+			}
+		}
+	};
+	
+	JSSpec.Logger.prototype.statics = {
+		makeUpdateAgo : function(config) {
+			var baseTime = new Date();
+			var endTime = baseTime.valueOf() + 180000;
+			return function() {
+				var now = (new Date()).valueOf();
+				var diff = JSSpec.util.formatDateDiff(now - baseTime,{hideMillis:true});
+				config.agoElement.title = "("+diff+" ago)";
+				if (now > endTime) {
+					config.agoElement.title = "(>"+diff+" ago)";
+					runnerWindow.clearInterval(config.agoTimer);
+				}
+			}
+		}
+	};
+	
+	JSSpec.Logger.prototype.onRunnerEnd = function(runner) {
+		if(runner.hasException()) {
+			var times = 4;
+			var title1 = "*" + this._title;
+			var title2 = "*F" + runner.getTotalFailures() + " E" + runner.getTotalErrors() + "* " + this._title;
+		} else {
+			var times = 2;
+			var title1 = this._title;
+			var title2 = "Success";
+		}
+		blinkTitle(times,title1,title2);
+		var agoElement = runnerWindow.document.getElementById("progress");
+		var agoConfig = { agoElement:agoElement };
+		var agoCallback = this.statics.makeUpdateAgo(agoConfig);
+		var agoTimer = runnerWindow.setInterval(agoCallback,5000);
+		agoConfig.agoTimer = agoTimer;
+		
+		initHighlighting();
+		addScriptText(runner.scriptText);
+		
+		if (!JSSpec.options.autocollapse) {
+			showExclusiveElement(runnerDetails);
+			top.setTimeout(updateRunnerIframeHeight,20); //TODO change, not functional
+		}
+
+		if (JSSpec.options.uploadurl) {
+			var pagename = runner.urlPath.replace(/(\.html$|\.htm$)/,"").replace(/\//g,".").substring(1);
+			this.uploadProps.push(new UploadProp("_top_pathname",top.location.pathname,"text"));
+			this.uploadProps.push(new UploadProp("_pathname",runner.urlPath,"text"));
+			this.uploadProps.push(new UploadProp("_pagename",pagename,"text"));
+			this.uploadProps.push(new UploadProp("_done","on","checkbox"));
+			this.uploadProps.push(new UploadProp("_submit","send","submit"));
+			var upload_form = runnerWindow.document.getElementById('upload_form');
+			upload_form.action = JSSpec.options.uploadurl;
+			upload_form.innerHTML = this.uploadProps.join("\n");
+			runnerWindow.setTimeout(function() {
+				upload_form.submit();
+			},15);
+		}
+	};
+	
+	/**
+	 * Called when no more runners will be run. Runner.prototype.queue.length will be 0.
+	 * If an exception ended the last runner, runner.excepted will be set.
+	 * 
+	 * @param {Object} runner Last runner to execute
+	 */
+	JSSpec.Logger.prototype.onRunnersEnd = function(runner) {
+		
+		this.onRunnersEndOrIdle();
+	}
+	
+	/**
+	 * autorun is false.
+	 */
+	JSSpec.Logger.prototype.onRunnersIdle = function() {
+		
+		this.onRunnersEndOrIdle();
+	}
+	
+	JSSpec.Logger.prototype.onRunnersEndOrIdle = function() {
+		
+		if (JSSpec.options.showhelp) {
+			showExclusiveElement(runnerHelp);
+			top.setTimeout(updateRunnerIframeHeight,20);
+		}
+	}
+		
+	JSSpec.Logger.prototype.onSpecStart = function(spec,runner) {
+		var spec_list = runnerWindow.document.getElementById("spec_" + spec.getId() + "_list");
+		var spec_log = runnerWindow.document.getElementById("spec_" + spec.getId());
+	
+		spec_list.className = "ongoing";
+		spec_log.className = "ongoing";
+		
+		if (JSSpec.options.uploadurl) {
+			var name = this.uploadNames.context+"_"+spec.pageId+"_"+spec.id;
+			this.uploadProps.push(new UploadProp(name,encodeURIComponent(spec.context),"text"));
+		}
+		return false;
+	};
+	
+	JSSpec.Logger.prototype.uploadNames = {
+		//pagename : "pagename",
+		context : "context",
+		example: "example",
+		status: "status",
+		message: "output"
+	}
+	
+	JSSpec.Logger.prototype.onSpecEnd = function(spec,runner) {
+		var spec_list = runnerWindow.document.getElementById("spec_" + spec.getId() + "_list");
+		var spec_log = runnerWindow.document.getElementById("spec_" + spec.getId());
+		var examples = runnerWindow.document.getElementById("spec_" + spec.getId() + "_examples");
+		var className = spec.hasException() ? "exception" : "success";
+	
+		spec_list.className = className;
+		spec_log.className = className;
+	
+		if(JSSpec.options.autocollapse && !spec.hasException()) examples.style.display = "none";
+	
+		if(spec.exception) {
+			heading.appendChild(runnerWindow.document.createTextNode(" - " + spec.exception.message));
+		}
+		return false;
+	};
+	
+	JSSpec.Logger.prototype.onExampleStart = function(example,runner) {
+		var li = runnerWindow.document.getElementById("example_" + example.getId());
+		li.className = "ongoing";
+		return false;
+	};
+	
+	JSSpec.Logger.prototype.onExampleEnd = function(example,runner) {
+		var li = runnerWindow.document.getElementById("example_" + example.getId());
+		li.className = example.exception ? "exception" : "success";
+	
+		if(example.exception) {
+			var div = runnerWindow.document.createElement("DIV");
+			div.innerHTML = example.exception.message + "<p><br />" + " at " + example.exception.fileName2 + ", line " + example.exception.lineNumber2 + "</p>";
+			li.appendChild(div);
+		}
+	
+		var title = runnerWindow.document.getElementById("totals");
+	
+		title.className = runner.hasException() ? "exception" : "success";
+	
+		this.finishedExamples++;
+		runnerWindow.document.getElementById("total_failures").innerHTML = runner.getTotalFailures();
+		runnerWindow.document.getElementById("total_errors").innerHTML = runner.getTotalErrors();
+		var progress = parseInt(this.finishedExamples / this.totalExamples * 100);
+		runnerWindow.document.getElementById("progress").innerHTML = progress;
+		runnerWindow.document.getElementById("total_elapsed").innerHTML = (new Date().getTime() - this.startedAt.getTime()) / 1000;
+	
+		top.document.title = progress + "%: " + this._title;
+
+		if (JSSpec.options.uploadurl) {
+			var status = example.isFailure()? "fail" : (example.isError()? "fail" : "pass");
+			var name = "_"+example.pageId+"_"+example.spec.id+"_"+example.id;
+			this.uploadProps.push(new UploadProp(this.uploadNames.example+name,example.name,"text"));
+			if (status == "pass") {
+				this.uploadProps.push(new UploadProp(this.uploadNames.status+name,"pass","text"));
+			} else {
+				this.uploadProps.push(new UploadProp(this.uploadNames.message+name,encodeURIComponent(example.exception.uploadMessage || example.exception.message),"textarea"));
+			}
+		}
+		return false;
+	};
+
+	var runnerDetails;
+	var runnerHelp;
+	var runnerExamples;
+
+	/**
+	 * Add the text from a script tag containing specifications
+	 * @param {Object} text
+	 */
+	function addScriptText(text) {
+		var pre = runnerWindow.document.createElement("PRE");
+		var code = runnerWindow.document.createElement("CODE");
+		code.className = "javascript";
+		var node = runnerWindow.document.createTextNode(text);
+		pre.appendChild(code);
+		code.appendChild(node);
+		runnerExamples.appendChild(pre);
+//			initHighlight(code); //TODO delay?		
+	}
+	JSSpec.addScriptText = addScriptText;
+	
+	function updateRunnerIframeHeight() {
+		var totals = runnerWindow.document.getElementById("totals");
+		var de = top.document.documentElement || top.document.body;
+		
+		var maxHeight = Math.max(de.scrollHeight+de.offsetTop || de.offsetHeight , de.innerHeight || de.clientHeight || 0);
+		var resultsHeight = runnerDetails.state.restrictHeight(runnerDetails,maxHeight);
+		var helpHeight = runnerHelp.state.restrictHeight(runnerHelp,maxHeight);
+		var examplesHeight = runnerExamples.state.restrictHeight(runnerExamples,maxHeight);
+		
+		var runnerHeight = runnerWindow.document.body.scrollHeight;
+		var newHeight = Math.min(maxHeight, Math.max(resultsHeight,helpHeight,examplesHeight,totals.offsetHeight));//,runnerHeight);
+		runnerWindow.runnerIframe.showNewHeight(newHeight,totals.offsetHeight); //TODO change, non-functional
+	}
+	
+	/**
+	 * Queue specs defined in specWindow to be run. Should be called by the spec page
+	 * when the runner is ready.
+	 * 
+	 * @param {Array} specPage.specs Array of JSSpec.Spec objects
+	 * @param {function} specPage.startPulse Function to start a pulse popping outstanding, and running executors.
+	 */
+	function runSpecs(specPage) {
+		if (specPage.specs.length > 0) {
+			var runner = new Runner(specPage);
+			Runner.prototype.runners.push(runner);
+			JSSpec.log.onRunnerAdded(runner);
+		}
+	}
+	JSSpec.runSpecs = runSpecs;
+
+	function ExclusiveState(chokeChildren) {
+		this.chokeChildren = chokeChildren || false;
+	}
+	
+	ExclusiveState.prototype.padding = {
+		top:5,right:5,bottom:5,left:5
+	};
+
+	ExclusiveState.prototype.childPadding = {
+		top:2,right:2,bottom:2,left:2
+	};
+
+	/**
+	 * Restrict the elements or its children to a pixel height. Determine
+	 * the height needed.
+	 * 
+	 * @param {Element} element The element with this state
+	 * @param {Number} maxHeight Max total height including element offset
+	 * @return Height needed in pixels
+	 */	
+	ExclusiveState.prototype.restrictHeight = function(element,maxHeight) {
+		var height; 
+		if (element.style.display == "none") return 0;
+		if (this.chokeChildren) {
+			height = 0;
+			for(var i=0,l=element.childNodes.length;i<l;++i) {
+				var c = element.childNodes[i];
+				var ch = c.autoHeight;
+				if (ch == undefined) {
+					ch = c.autoHeight = c.offsetTop + c.offsetHeight;
+				}
+				if (ch > maxHeight - element.offsetTop) {
+					ch = maxHeight - element.offsetTop - c.offsetTop; 
+					//TODO determine padding/border?
+					c.style.height = (ch - this.childPadding.top - this.childPadding.bottom) + "px";
+				}				
+				height = Math.max(height,ch);
+			}
+		}
+		else {
+			height = element.autoHeight;
+			if (height == undefined) {
+				height = element.autoHeight = element.offsetTop + element.offsetHeight;
+			}
+			if (height > maxHeight) {
+				height = maxHeight - element.offsetTop; // 1 px border 4 px padding
+				element.style.height = (height - this.padding.top - this.padding.bottom) + "px";
+			}
+		}
+		return height + element.offsetTop;		
+	};
+
+	ExclusiveState.prototype.hide = function(element) {
+		if (this.chokeChildren) {
+			for(var j=0,len=element.childNodes.length; j<len; ++j){
+				var child = element.childNodes[j];
+				child.style.height = "auto";
+				child.autoHeight = undefined;
+			}
+		}
+		else {
+			element.style.height = "auto";
+			element.autoHeight = undefined;
+			}
+		element.style.display = "none";
+	}; 
+			
+	function showExclusiveElement(element) {
+		var list = element.parentNode.childNodes;
+		element.style.display = "block";
+		for(var i=0,l=list.length;i<l;++i) {
+			if (list[i] != element && list[i].nodeType == 1 && list[i].state) {
+				list[i].state.hide(list[i]);
+			}
+		}
+	}
+	
+	function hideExclusiveElement(element) {
+		element.state.hide(element);
+	}
+	
+	/**
+	 * Make onclick handler for a div among siblings, of which only one should be shown.
+	 */
+	function makeHandlerToggle(element) {
+		var list = element.parentNode.childNodes;
+		if (!element.state) element.state = new ExclusiveState();
+			
+		return function() {
+			var currentDisplay = element.style.display;
+			if (currentDisplay == "none") {
+				showExclusiveElement(element);
+			}
+			else {
+				hideExclusiveElement(element);
+			}
+				
+			top.setTimeout(updateRunnerIframeHeight,20);
+		}
+	}
+	
+	function haltRunners() {
+		Runner.prototype.haltRun = true;
+		JSSpec.log.onRunnersIdle();
+	}
+
+	/*
+	 * Used for Run button
+	 */
+	function releaseRunners() {
+		Runner.prototype.haltRun = false;
+		if (this.nodeType) this.disabled = true;
+	}	
+	
+	var TOGGLE_REGEX = /^toggle:/;
+	var RELEASE_REGEX = /^release:/;
+
+	if (runnerWindow.console) console.log("setting runner onload");
+		
+	window.onload = function() {
+		if (runnerWindow.console) console.log("runner window onload");
+		JSSpec.isReady = true; // flag to tell Spec pages that the runner is ready
+		
+		runnerWindow.onresize = function() {
+			updateRunnerIframeHeight();
+		}
+		
+		runnerDetails = runnerWindow.document.getElementById("details");
+		runnerDetails.state = new ExclusiveState(true);
+		runnerHelp = runnerWindow.document.getElementById("help");
+//		runnerHelp.state = new ExclusiveState(true);
+		runnerExamples = runnerWindow.document.getElementById("examples");
+
+		var buttons = runnerWindow.document.getElementsByTagName("BUTTON");
+		for(var i = 0,l = buttons.length;i<l;++i) {
+			var name = buttons[i].getAttribute("name");
+			if (TOGGLE_REGEX.test(name)) {
+				var page = runnerWindow.document.getElementById(name.split(":")[1]);
+				if (page) {
+					buttons[i].onclick = makeHandlerToggle(page);
+				}
+			}
+			if (RELEASE_REGEX.test(name)) {
+				if (name == "release:runners") {
+					if (Runner.prototype.haltRun) {
+						buttons[i].onclick = releaseRunners;
+					} else {
+						buttons[i].setAttribute("disabled", true);
+					}
+				}
+			}
+		}
+		var suite =  (JSSpec.options.autorun == "links" 
+					||JSSpec.options.autorun == "all"
+					||JSSpec.options.run == "links"
+					||JSSpec.options.run == "all" 
+					||JSSpec.options.runlinks);
+		if (suite) runnerWindow.runnerIframe.addSpecLinks(JSSpec.options.runlinks);
+		
+		if (JSSpec.options.autorun) releaseRunners();
+		else haltRunners();
+	}
+	
+	window.onunload = function() {
+		if (runnerWindow.console) {
+			console.log("unload runner frame");
+		}
+	}
+
+	JSSpec.log = new JSSpec.Logger();
+	
+	// public namespace on the runner
+	runnerWindow.JSSpec = JSSpec;	
+})(window);
+
+
+
+//TODO toggle buttons
+//TODO autoXXX
+</script>
+
+<style type="text/css">
+
+</style>
+</head>
+
+<body class="JSSpecResults">
+<div id="totals">
+<h1>JSSpec runner</h1>
+<ul>
+<li><button name="toggle:examples"><span id="total_examples">0</span> examples</button></li>
+<li><button name="toggle:details" title="Show detailed results"><span id="total_failures">no</span> failures</button></li>
+<li><button name="toggle:details" title="Show detailed results"><span id="total_errors">0</span> errors</button></li>
+<li><span id="progress">0</span>% done </li>
+<li><span id="total_elapsed">0</span> secs</li>
+<li><button name="toggle:help" title="Show help and tips">Help</button></li>
+<li><button name="release:runners">Run</button> <a href="javascript:top.opener='x';top.close();">c</a></li>
+</ul>
+<p class="ref-links"><a href="http://jania.pe.kr/aw/moin.cgi/JSSpec">JSSpec<br>Home</a></p>
+<hr>
+</div>
+<div id="details" style="display:none;"><div id="list"></div><div id="log"></div></div>
+<div id="examples" style="display:none;">Examples</div>
+<div id="help" style="display:none;">
+<div>
+<pre>
+describe("spec",{
+"before":function() {},
+"after":function() {},
+"example": function() {}
+});
+</pre>
+special example names:
+<dl>
+<dt>
+before</dt><dd> 
+Before each example</dd>
+<dt>after</dt>
+<dd>After each example</dd>
+<dt>before all</dt>
+<dd>Before any example is verified, I.E. once per Spec</dd>
+<dt>after all</dt>
+<dd>After all examples are verified, I.E. once per Spec</dd>
+</dl>
+
+Expressions
+<pre>
+describe("spec",{
+"[[document.getElementById('aa') != null]]": function() {}
+});
+</pre>
+
+<h2>Uploading results</h2>
+When specifying <code>uploadurl</code> the results will be uploaded at the end of the Specification run.
+It is posted in one or more POSTs. Each post acting as a form submission.
+
+_pathname specifies the pathname of the Spec being run. If a suite of Specs are run, this is the pathname of the topmost spec.
+_done specifies that the results upload is complete
+{specname}_{context}_{example}_{status} specifies the results for a single example run.
+
+
+<h2>JSSpec.js</h2>
+JSSpec.js Have two main responsibilities. 
+<ol>
+<li>To implement describe and value_of functions on the window object(the window in which it is loaded)
+</li>
+<li>To ensure that there is an iframe in the body of the top window with JSSpecRunner.html
+</li>
+</ol>
+
+<h2>JSSpecRunner.html</h2>
+JSSpecRunner.html is responsible for
+<ol>
+<li>Creating Runner and Logger classes for managing the running and result output</li>
+<li>Show results and run specs based on options passed to the top page</li>
+<li>Upload results to back end</li>
+<li>Create and run additional spec pages in separate iframes if top window is a suite</li>
+<li>Track progress and total metrics for running specs</li>
+<li>Adding a collection of utility functions to all Spec pages</li>
+</ol>
+
+<h2>JSSpec classes</h2>
+<dl>
+<dt>Spec</dt><dd>Specification created by describe function</dd>
+<dt>Example</dt><dd>Example instantiated for each entry in the map passed to describe</dd>
+<dt>Browser</dt><dd>UserAgent recognition for handling browser differences</dd>
+<dt>Executor</dt><dd>Single task to be executed as an individual timeout event</dd>
+<dt>Runner</dt><dd>Single instance that manages the specs currently running</dd>
+<dt>Logger</dt><dd>Single instance that renders results and metrics in runner window</dd>
+</dl>
+
+Loading/Initialisation order for a single Spec page
+<dl>
+<dt>JSSpec.js loaded</dt><dd>describe functions are implemented on specWindow immediately. Implement Spec</dd>
+<dt>specWindow.onload</dt><dd>Runner iframe is inserted at top of specWindow.</dd>
+<dt>runnerWindow.script</dt><dd>util namespace is created along with Runner and Logger classes.</dd>
+<dt>runnerWindow.onload</dt><dd>Add util namespace and options to JSSpec(private namespace) in top window</dd>
+<dt>specWindow.onrunnerready</dt><dd>Finishes setup(completes relationship between specWindow and runnerWindow) now that the runner iframe is properly constructed</dd>
+</dl>
+
+	<dl>
+	<dt>showhelp</dt><dd>Show a help window describing how to use JSSpec</dd>
+	<dt>autorun</dt><dd>Run the Specs defined in the file. Default = true.</dd>
+	<dt>autocollapse</dt><dd>Collapse results that pass. Default = true.</dd>
+	<dt>autototals</dt><dd>Show totals bar above regular body. Default = true.</dd>
+	<dt>uploadurl</dt><dd>Defines the base url for result uploads. Default = no upload.</dd>
+	<dt>autoresults</dt>
+	<dt>specIdBeginsWith</dt>
+	<dt>exampleIdBeginsWith</dt>
+	<dt>rerun</dt><dd>Rerun a specific Spec, skipping other defined Specs.</dd>
+	<dt>inSuite</dt><dd>Run as part of a suite.</dd>
+	</dl>
+	<form id="upload_form" method="post" target="upload_iframe"></form>
+</div>
+</div>
+<iframe id="upload_iframe" name="upload_iframe" width="1" height="1" frameborder="0" src="about:blank"></iframe>
+</body>
+
+</html>

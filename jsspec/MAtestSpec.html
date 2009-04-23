@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <title>Second Spec</title>
+
+    <!-- core files required by JsSpec -->
+    <script type="text/javascript" src="/jsspec/JSSpec.js?autorun=true&uploadurl=/jsspec/upload">
+    </script>
+    <link rel="shortcut icon" href="about:blank" type="plain/text">
+
+    <style type="text/css">
+        body {
+            font-family: "Lucida Grande", Helvetica, sans-serif;
+            font-size: .8em;
+        }
+
+        .bulk {
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        table.options {
+            background-color: #AAA;
+        }
+
+        table.options col.first {
+            border-right: 1px dotted black;
+        }
+
+        table.options col.last {
+            border-left: 1px dotted black;
+        }
+    </style>
+    
+<script language="JavaScript" type="text/javascript">
+    //debugger;
+    
+describe('Form values', {
+    'initial values': function() {
+        var doc = top.document.getElementById('creditRiskFrame').contentDocument;
+        value_of_element("#buehne1",doc).should_not_be_empty();
+        value_of_element("#buehne1",doc).should_match('Deutsche');
+        value_of_element("#HeaderTab_HF_Portfolio",doc).should_match('Portfolio');
+    },
+    'defered calls': function() {
+		setTimeout(function() {
+            console.log("....");
+		},1000);
+        var doc = top.document.getElementById('creditRiskFrame').contentDocument;
+        value_of_element("#ext-comp-1034",doc).keystrokes("whi");
+        value_of_element("#Group_HF_1_buttonSearch",doc).click();
+    }
+})
+</script>
+
+</head>
+<body>
+<iframe name="creditRiskFrame" id="creditRiskFrame" src="/creditrisk/hf.jsp" height="80%" width="100%">
+</iframe>
+</body>
+</html>

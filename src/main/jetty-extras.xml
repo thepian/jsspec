@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+
+<!-- =============================================================== -->
+<!-- Configure the Jetty Server                                      -->
+<!--                                                                 -->
+<!-- Documentation of this file format can be found at:              -->
+<!-- http://docs.codehaus.org/display/JETTY/jetty.xml                -->
+<!--                                                                 -->
+<!-- =============================================================== -->
+
+
+<Configure id="Server" class="org.mortbay.jetty.Server">
+
+    <Set name="ThreadPool">
+      <New class="org.mortbay.thread.BoundedThreadPool">
+        <Set name="minThreads">10</Set>
+        <Set name="maxThreads">250</Set>
+        <Set name="lowThreads">25</Set>
+      </New>
+    </Set>
+    <Call name="addConnector">
+      <Arg>
+          <New class="org.mortbay.jetty.bio.SocketConnector">
+            <Set name="port">9080</Set>
+            <Set name="maxIdleTime">50000</Set>
+            <Set name="lowResourceMaxIdleTime">1500</Set>
+          </New>
+      </Arg>
+    </Call>
+    <!-- 
+    <Call name="addConnector">
+      <Arg>
+          <New class="org.mortbay.jetty.nio.SelectChannelConnector">
+            <Set name="host"><SystemProperty name="jetty.host" /></Set>
+            <Set name="port"><SystemProperty name="jetty.port" default="9080"/></Set>
+            <Set name="maxIdleTime">30000</Set>
+            <Set name="Acceptors">2</Set>
+            <Set name="statsOn">false</Set>
+            <Set name="confidentialPort">8443</Set>
+		    <Set name="lowResourcesConnections">5000</Set>
+		    <Set name="lowResourcesMaxIdleTime">5000</Set>
+          </New>
+      </Arg>
+    </Call>
+	 -->
+	 
+    <!-- =========================================================== -->
+    <!-- Set handler Collection Structure                            --> 
+    <!-- =========================================================== -->
+    <Set name="handler">
+      <New id="Handlers" class="org.mortbay.jetty.handler.HandlerCollection">
+        <Set name="handlers">
+         <Array type="org.mortbay.jetty.Handler">
+           <Item>
+             <New class="jsspec.extras.MultipleResourcesHandler">
+             <!-- 
+             <Call name="addResourceBase"><Arg>/creditrisk/js/*</Arg><Arg>../CRS-trunk/creditrisk/web/js</Arg></Call>
+             <Call name="addResourceBase"><Arg>/creditrisk/css/*</Arg><Arg>../CRS-trunk/creditrisk/web/css</Arg></Call>
+             <Call name="addResourceBase"><Arg>/creditrisk/images/*</Arg><Arg>../CRS-trunk/js-client/src/images</Arg></Call>
+             <Call name="addResourceBase"><Arg>/creditrisk/test/spec/*</Arg><Arg>../CRS-trunk/js-client/tst/spec</Arg></Call>
+             <Call name="addResourceBase"><Arg>/creditrisk/test/*</Arg><Arg>../CRS-trunk/js-client/tst/web</Arg></Call>
+              -->
+             <Call name="addResourceBase"><Arg>/jsspec/*</Arg><Arg>src/main/web</Arg></Call>
+             </New>
+           </Item>
+           <!-- 
+           <Item>
+             <New class="jsspec.extras.MultipleResourcesHandler">
+             <Call name="addResourceBase"><Arg>/creditrisk/test/js/*</Arg><Arg>../CRS-trunk/js-client/web/js</Arg></Call>
+             <Call name="addResourceBase"><Arg>/creditrisk/test/css/*</Arg><Arg>../CRS-trunk/js-client/web/css</Arg></Call>
+             <Call name="addResourceBase"><Arg>/creditrisk/test/images/*</Arg><Arg>../CRS-trunk/js-client/web/images</Arg></Call>
+             </New>
+           </Item>
+            -->
+           <Item>
+           	<New class="jsspec.extras.JSSpecHandler">
+	           	<Set name="uploadUrlPath">/jsspec/upload</Set>
+	           	<Set name="reportsDirectory">reports/junit/data</Set>
+           	</New>
+           </Item>
+           <Item>
+             <New class="jsspec.extras.TransparentProxyHandler">
+             	<Set name="serverPort"><SystemProperty name="extras.port" default="7001"/></Set>
+                <Set name="user"><SystemProperty name="extras.user" default="michael.andrewes@db.com"/></Set>
+                <Set name="pass"><SystemProperty name="extras.pass" default="password"/></Set>
+             </New>
+           </Item>
+           <Item>
+             <New id="Contexts" class="org.mortbay.jetty.handler.ContextHandlerCollection"/>
+           </Item>
+           <Item>
+             <New id="DefaultHandler" class="org.mortbay.jetty.handler.DefaultHandler"/>
+           </Item>
+         </Array>
+        </Set>
+      </New>
+    </Set>
+    
+    <!-- =========================================================== -->
+    <!-- extra options                                               -->
+    <!-- =========================================================== -->
+    <Set name="stopAtShutdown">true</Set>
+    <Set name="sendServerVersion">true</Set>
+    <Set name="sendDateHeader">true</Set>
+    <Set name="gracefulShutdown">1000</Set>
+
+</Configure>

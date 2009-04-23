@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Second Spec</title>
+
+<!-- core files required by JsSpec -->
+<script type="text/javascript" src="/jsspec/JSSpec.js?autorun=false&uploadurl=/jsspec/upload">
+</script>
+<link rel="shortcut icon" href="about:blank" type="plain/text">
+
+<style type="text/css">
+html { _overflow-y:auto; }
+body { overflow-y:auto; font-family: "Lucida Grande", Helvetica, sans-serif; font-size: .8em; }
+.bulk { overflow-y:auto; height:100%; }
+table.options { background-color: #AAA; }
+table.options col.first { border-right: 1px dotted black; }
+table.options col.last { border-left: 1px dotted black; }
+</style>
+
+<!-- script tag used to define the unit tests for this page -->
+<script language="JavaScript" type="text/javascript">
+
+describe('Plus operator (just for example)', {
+	'should concatenate two strings': function() {
+		value_of("Hello " + "World").should_be("Hello World");
+	},
+	'should add two numbers': function() {
+		value_of(1 + 2).should_be(3);
+	}
+})
+</script>
+
+	</head>
+	<body>
+	</body>
+</html>
