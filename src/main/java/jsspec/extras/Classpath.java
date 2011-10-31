@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at 
+// You may obtain a copy of the License at
 // http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,16 +30,16 @@ import java.util.Vector;
  */
 public class Classpath {
 
-    Vector _elements = new Vector();    
+    Vector _elements = new Vector();
 
     public Classpath()
-    {}    
+    {}
 
     public Classpath(String initial)
     {
         addClasspath(initial);
     }
-        
+
     public boolean addComponent(String component)
     {
         if ((component != null)&&(component.length()>0)) {
@@ -58,7 +58,7 @@ public class Classpath {
         }
         return false;
     }
-    
+
     public boolean addComponent(File component)
     {
         if (component != null) {
@@ -87,8 +87,8 @@ public class Classpath {
             }
         }
         return added;
-    }    
-    
+    }
+
     public String toString()
     {
         StringBuffer cp = new StringBuffer(1024);
@@ -102,7 +102,7 @@ public class Classpath {
         }
         return cp.toString();
     }
-    
+
     public ClassLoader getClassLoader() {
         int cnt = _elements.size();
         URL[] urls = new URL[cnt];
@@ -111,7 +111,7 @@ public class Classpath {
                 urls[i] = ((File)(_elements.elementAt(i))).toURL();
             } catch (MalformedURLException e) {}
         }
-        
+
         ClassLoader parent = Thread.currentThread().getContextClassLoader();
         if (parent == null) {
             parent = Classpath.class.getClassLoader();
@@ -125,7 +125,7 @@ public class Classpath {
     private class Loader extends URLClassLoader
     {
         String name;
-        
+
         Loader(URL[] urls, ClassLoader parent)
         {
             super(urls, parent);
@@ -137,5 +137,5 @@ public class Classpath {
             return name;
         }
     }
-    
+
 }

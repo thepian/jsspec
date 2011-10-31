@@ -39,7 +39,7 @@
 	var JSSPEC_SCRIPT_NAME = "JSSpec.js";
 	var JSSPEC_RUNNER_NAME = 'JSSpecRunner.html';
 	var JSSPEC_HEIGHT = "45px";
-	
+
 	if (!specWindow.console) specWindow.console = { log:function(){}};
 
 	var specPage = {
@@ -50,11 +50,11 @@
 			}
 			return null;
 		},
-	
+
 		location: specWindow.location,
 		specWindow: specWindow,
 		scriptText: "",
-	
+
 		MAXPULSE: 80,
 		INTERVAL: 100,
 		stopPulse: function(runner) {
@@ -62,20 +62,20 @@
 				specWindow.clearInterval(this.interval);
 				console.log("pulse cleared "+this.interval);
 				delete this.interval;
-			}			
+			}
 		},
 		startPulse: function(runner) {
 			var specPage = this; // improves readability, and a fraction speed
 			this.interval = specWindow.setInterval(runnerPulse,this.INTERVAL); // keep track of progress
-			
+
 			function runnerPulse() {
 				if (runner.haltRun) return;
-	
+
 				runner.onRunnerStart();
 				var now = new Date();
 				var pulseStarted = now.valueOf();
 				var pulseUntil = pulseStarted + specPage.MAXPULSE;
-				
+
 				var rl = runner.outstanding.length;
 				while(rl > 0 && now.valueOf() < pulseUntil) {
 					var executor = runner.outstanding[rl-1];
@@ -87,10 +87,10 @@
 						executor.run();
 						if (runner.finishPulse) { runner.finishPulse = false; return; }
 					}
-					
+
 					now = new Date();
 					rl = runner.outstanding.length;
-				}			
+				}
 				if (rl <= 0) {
 					specPage.stopPulse(runner);
 					runner.onRunnerEnd();
@@ -98,7 +98,7 @@
 			}
 		}
 	}
-	
+
 	var Browser = {
 		Trident: navigator.appName == "Microsoft Internet Explorer",
 		TridentWin32 : typeof ActiveXObject != "undefined" && navigator.appName == "Microsoft Internet Explorer",
@@ -106,12 +106,12 @@
 		Gecko: navigator.userAgent.indexOf('Gecko') > -1 && navigator.userAgent.indexOf('KHTML') == -1,
 		Presto: navigator.appName == "Opera"
 	}
-	
+
 	var JSSpec = {
 		version: 0.1,
 		options: {}
 	};
-	
+
 	function EMPTY_FUNCTION() {}
 	EMPTY_FUNCTION.empty = true;
 
@@ -151,7 +151,7 @@
 
 		return html;
 	}
-	
+
 	// Used to glue iframes to the browser frame
 	function FrameGlue(affect) {
 		this.affect = affect;
@@ -166,7 +166,7 @@
 			el.style.height = sizes.height - Browser.Trident? parseInt(JSSPEC_HEIGHT) : 0;
 		}
 	};
-	
+
 	/**
 	 * Mixed in to the runner iframe to provide functions for updating the size.
 	 * To get around IE positioning bugs it needs to be embedded into an enclosing DIV,
@@ -184,7 +184,7 @@
 		allowtransparency: "true",
 		scrolling : "no",
 		state: { manipulateHost: true },
-		
+
 		setInitialAttributes: function() {
 			this.jsspecGlue = new FrameGlue({width:true});
 			this.setAttribute("style","display:block; position:absolute; height:0; top:0; width:100%; left:0; border:0 none; margin:0; padding:0;");
@@ -201,7 +201,7 @@
 			if (autototals == "hover") this.state.maniupulateHost = false;
 			var manipulateHost = this.state.maniupulateHost;
 			if (manipulateHost) {
-				if (cs.position == "static") { 
+				if (cs.position == "static") {
 					body.style.position = "relative";
 					body.style.margin = "0px";
 				}
@@ -219,14 +219,14 @@
 			this.style.marginTop = "0px";
 			onWindowResize();
 		},
-		
+
 		addSpecFrame: function(link) {
 			var iframe = top.document.createElement("IFRAME");
 			var src = link.href || link.src;
-			src += (/\?/.test(src)? '&' : '?') + "cacheBreaker=" + String(new Date().valueOf()); 
+			src += (/\?/.test(src)? '&' : '?') + "cacheBreaker=" + String(new Date().valueOf());
 			iframe.src = src;
 			iframe.jsspecGlue = new FrameGlue({width:true,height:true});
-			
+
 			iframe.setAttribute("style","display:block; position:absolute; height:0; top:0; margin-top:"+JSSPEC_HEIGHT+"; left:0; width:100%; border:0 none; margin:0; padding:0;");
 			iframe.width = "100%";
 			iframe.height = 0;
@@ -241,10 +241,10 @@
 				debugger;
 			}
 		},
-	
+
 		addSpecLinks: function(runlinks) {
 			runlinks = (runlinks === true || runlinks == "true" || runlinks == "1" || runlinks === 1 || runlinks == "all" || runlinks == "yes")? true : runlinks;
-			
+
 			var links = top.document.getElementsByTagName("LINK");
 			for(var i=0,l=links.length;i<l;++i) {
 				var link = links[i];
@@ -261,24 +261,24 @@
 			}
 			onWindowResize();
 		},
-		
+
 		showNewHeight : function(height,padding) {
-			specWindow.setTimeout(function(){ 
+			specWindow.setTimeout(function(){
 				runnerIframe.height = height;
 				runnerIframe.style.height = height + "px";
 				top.document.body.style.paddingTop = (padding || parseInt(JSSPEC_HEIGHT)) + "px";
 			},0);
 		}
 	};
-	
+
 	var runnerReadyHandle;
 	var runnerIframe;
-	
-	
+
+
 	function onWindowResize() {
 		top.setTimeout(deferredWindowResize,15);
 	}
-	
+
 	function deferredWindowResize() {
 		var body = top.document.body;
 		var bodyStyle = body.currentStyle || top.getComputedStyle(body,"");
@@ -291,7 +291,7 @@
 			right: parseInt(bodyStyle.paddingRight || "0") + parseInt(bodyStyle.marginRight || "0")
 		};
 		sizes.width = (de.clientWidth || de.offsetWidth) - sizes.left - sizes.right;
-		sizes.height = 	(de.clientHeight || de.offsetHeight) - sizes.top - sizes.bottom;	
+		sizes.height = 	(de.clientHeight || de.offsetHeight) - sizes.top - sizes.bottom;
 		if (body.jsspecGlue && body.jsspecGlue.affect.width) {
 			body.style.width = sizes.width + "px"; // track size of window
 		}
@@ -299,7 +299,7 @@
 			body.style.height = sizes.height + "px"; // track size of window
 		}
 		var iframes = body.getElementsByTagName("IFRAME");
-		for(var i = iframes.length-1;i>=0;--i) 
+		for(var i = iframes.length-1;i>=0;--i)
 			if (iframes[i].jsspecGlue) iframes[i].jsspecGlue.onResize(iframes[i],sizes);
 	}
 
@@ -312,7 +312,7 @@
 			else if (specWindow.attachEvent) specWindow.attachEvent("onresize",onWindowResize);
 			else specWindow.onresize = onWindowResize;
 		}
-		
+
 		var jsspecPath = ""; // prefix for all jsspec resources
 		var scriptOptions = "";
 
@@ -336,7 +336,7 @@
 					}
 				}
 			}
-			
+
 		specPage.scriptOptions = {};
 		var so = specPage.scriptOptions;
 		if (scriptOptions) {
@@ -361,11 +361,11 @@
 				topOptions[tokens[0]] = tokens[1];
 			}
 		}
-		var makeRunner = so.autorun || (so.autototals || so.autototals === undefined) || topOptions.autorun || topOptions.autototals; 
+		var makeRunner = so.autorun || (so.autototals || so.autototals === undefined) || topOptions.autorun || topOptions.autototals;
 
 		if (makeRunner) {
 			top.document.body.setAttribute("jsspecGlue", new FrameGlue({})); // Set glue on body
-					
+
 			runnerIframe = top.document.getElementById(runnerFrameMixin.id);
 			if (!runnerIframe) {
 				runnerIframe = top.document.createElement("IFRAME");
@@ -378,16 +378,16 @@
 				top.document.body.appendChild(runnerIframe);
 				runnerIframe.contentWindow.runnerIframe = runnerIframe;
 			}
-			
+
 			if (!tryRunnerReady()) {
-				runnerReadyHandle = specWindow.setInterval(tryRunnerReady,30); 
-			}	
+				runnerReadyHandle = specWindow.setInterval(tryRunnerReady,30);
+			}
 		}
 	}
-		
+
 	/**
 	 * @return true if runner was ready, and onRunnerReady was called
-	 */	
+	 */
 	function tryRunnerReady() {
 		if (runnerIframe.contentWindow.JSSpec && runnerIframe.contentWindow.JSSpec.isReady) {
 			if (runnerReadyHandle) specWindow.clearInterval(runnerReadyHandle);
@@ -399,7 +399,7 @@
 		return false;
 	}
 	var diff_match_patch;
-	
+
 	/**
 	 * Is called when JSSpecRunner.html scripts have been parsed, but potentially before the onload event.
 	 */
@@ -412,18 +412,18 @@
 		JSSpec.EqualityMatcher.typeMap = JSSpec.util.typeMap;
 		JSSpec.PatternMatcher.prototype.typeMap = JSSpec.util.typeMap;
 		JSSpec.DSL.Subject.prototype.typeMap = JSSpec.util.typeMap;
-			
+
 		JSSpec.options = runnerWindow.JSSpec.options;
 		JSSpec.defaultOptions = runnerWindow.JSSpec.defaultOptions;
 		JSSpec.describeOptions = runnerWindow.JSSpec.describeOptions;
-		
+
 		var jsspec_current_options = specWindow.document.getElementById("jsspec_current_options");
 		if (jsspec_current_options) {
 			jsspec_current_options.innerHTML = JSSpec.util.formatOptionsAsTable(JSSpec.options,JSSpec.defaultOptions,JSSpec.describeOptions);
 		}
-		
+
 		JSSpec.Example.prototype.pageId = JSSpec.Spec.prototype.pageId = runnerWindow.JSSpec.specPageId++;
-		
+
 		if (JSSpec.options.autototals) {
 			iframe.showTotals(JSSpec.options.autototals);
 		} else {
@@ -457,11 +457,11 @@
 
 	Spec.id = 0;
 	Spec.prototype.pageId = 0; //set when runner is ready
-	
+
 	Spec.prototype.getId = function() {
 		return this.pageId + "_" + this.id;
 	};
-	
+
 	Spec.prototype.getExamples = function() {
 		return this.examples;
 	};
@@ -552,7 +552,7 @@
 
 	function enableErrorHandler(instance,baseException,executor) {
 		specWindow.onerror = function(message, fileName, lineNumber) {
-			
+
 			baseException.fileName = fileName;
 			baseException.lineNumber = lineNumber;
 
@@ -561,19 +561,19 @@
 			disableErrorHandler();
 			return true;
 		}
-	}	
-	
+	}
+
 	function disableErrorHandler() {
 		delete specPage.secondPass;
 		delete specWindow.onerror;
 	}
-	
+
 	var currentSpec;
 	var currentExample;
 
 	/*
 		@return Exception if failure, or null if success
-	*/	
+	*/
 	function testExampleMethod(methodName,executor) {
 		if (this instanceof Spec) currentSpec = this;
 		else currentExample = this;
@@ -587,7 +587,7 @@
 			return ex;
 		}
 	}
-	
+
 	function runSpecOrExampleMethod(methodName,executor) {
 		if (this instanceof Spec) currentSpec = this;
 		else currentExample = this;
@@ -617,7 +617,7 @@
 						ex.lineNumber2 = ex2.lineNumber;
 					}
 				}
-			}			
+			}
 			this.exception = ex;
 			executor.onException(this,ex);
 			executor.onAfterException(this,ex);
@@ -629,9 +629,9 @@
 
 	function hasNonEmptyFunction(name) {
 		return (typeof this[name] == "function" && !this[name].empty);
-	}	
+	}
 	Spec.prototype.hasNonEmptyFunction = hasNonEmptyFunction;
-	
+
 	/**
 	 * Example
 	 */
@@ -642,7 +642,7 @@
 		this.target = target;
 		this.before = before;
 		this.after = after;
-		
+
 		this.delayed = []; // delayed Subject verification
 	}
 	JSSpec.Example = Example;
@@ -659,7 +659,7 @@
 	Example.prototype.isError = function() {
 		return this.exception && !this.exception.type;
 	};
-	
+
 	Example.prototype.run = runSpecOrExampleMethod;
 	Example.prototype.test = testExampleMethod;
 	Example.prototype.hasNonEmptyFunction = hasNonEmptyFunction;
@@ -703,16 +703,16 @@
 		}
 		return "sleep";
 	};
-	
+
 	Example.prototype._pulse = function(subject) {
 		subject.pulse();
 	}
-	
+
 	Example.prototype._lastPulse = function(subject) {
 		subject.lastPulse();
 	}
-	
-	/* Derived Error objects dont get lineNumber info */	
+
+	/* Derived Error objects dont get lineNumber info */
 	function ExampleFailure(message) {
 		var e = new Error(message);
 		e.type = "failure";
@@ -762,7 +762,7 @@
 		sb.push('<p>but since it\s not an array, include or not doesn\'t make any sense.</p>');
 		return sb.join("");
 	};
-	
+
 	IncludeMatcher.prototype.makeExplainForArray = function() {
 		var matches;
 		if(this.condition) {
@@ -897,12 +897,12 @@
 	JSSpec.PropertyLengthMatcher.createInstance = function(num, property, o, condition) {
 		return new JSSpec.PropertyLengthMatcher(num, property, o, condition);
 	};
-	
+
 	function InstanceofMatcher(constructor,o) {
 		//TODO
 		this.explaination = "";
 	}
-	
+
 	InstanceofMatcher.prototype.explain = function() {
 		return this.explaination;
 	}
@@ -1248,16 +1248,16 @@
 		this.target = target;
 	}
 	JSSpec.DSL.Subject = Subject;
-	
+
 	Subject.prototype.getValue = function() {
 		return this.target;
 	};
-	
+
 	Subject.prototype.log = function(message) {
 		if (console) console.log(message);
 		return this;
 	}
-	
+
 	//TODO Source description for failures. getSource blank for simple values, expression for complex.
 
 	JSSpec.DSL.Subject.prototype.should_fail = function(message) {
@@ -1361,7 +1361,7 @@
 			throw ExampleFailure(matcher.explain());
 		}
 	};
-	
+
 	//TODO recognise target type function
 
 	JSSpec.DSL.Subject.prototype.getType = function() {
@@ -1381,7 +1381,7 @@
 		}
 	};
 	JSSpec.DSL.Subject.prototype.getType.nondelayed = true;
-	
+
 	Subject.prototype.after = function(secs) {
 		var delayed = new DelayedSubject(this);
 		delayed.afterStamp = new Date().getTime() + (secs * 1000);
@@ -1389,7 +1389,7 @@
 		return delayed;
 	};
 	Subject.prototype.after.nondelayed = true;
-	
+
 	Subject.prototype.within = function(secs,frequency) {
 		var delayed = new DelayedSubject(this);
 		delayed.withinStamp = new Date().getTime() + (secs * 1000);
@@ -1398,7 +1398,7 @@
 		return delayed;
 	};
 	Subject.prototype.within.nondelayed = true;
-	
+
 	function DelayedSubject(subject) {
 		this.subject = subject;
 		this.target = subject.target;
@@ -1408,17 +1408,17 @@
 		this.afterStamp = 0;
 	}
 	DelayedSubject.prototype = makeDelayedPrototype(Subject.prototype);
-	
+
 	function notSupported() {
 		throw new ExampleException("Only one after/within expression is allowed per subject");
 	}
 	DelayedSubject.prototype.after = notSupported;
 	DelayedSubject.prototype.within = notSupported;
-		
+
 	DelayedSubject.prototype.dummy = function() {
 		var nothing = 0;
 	};
-	
+
 	DelayedSubject.prototype.pulse = function() {
 		specPage.inDelayedPulse = true;
 		if (this.withinStamp) {
@@ -1438,14 +1438,14 @@
 		}
 		delete specPage.inDelayedPulse;
 	}
-	
+
 	function makeDelayedCall(name,func) {
 		return function() {
 			this.verify.push({name:name,func:func,args:arguments});
 			return this;
 		}
 	}
-	
+
 	/**
 	 * Create a prototype with the same methods as the origin. Each method will push
 	 * the call onto an internal stack.
@@ -1470,14 +1470,14 @@
 		this.inputType = null;
 		if (this.target.tagName == "INPUT") {
 			this.inputType = (this.target.type || "text").toLowerCase();
-		} 
+		}
 		else if (this.target.tagName == "TEXTAREA") {
 			this.inputType = "textarea";
 		}
 		else if (this.target.tagName == "BUTTON") {
 			this.inputType = "button";
 		}
-		
+
 	}
 	ElementSubject.prototype = new Subject();
 
@@ -1491,7 +1491,7 @@
 		}
 		return true;
 	}
-	
+
 	function getXY(el) {
         var p, pe, b, scroll, bd = (document.body || document.documentElement);
 
@@ -1504,9 +1504,9 @@
             scroll = fly(document).getScroll();
             return [b.left + scroll.left, b.top + scroll.top];
         }
-*/        
+*/
         var x = 0, y = 0;
-        
+
         p = el;
 /*
         var hasAbsolute = fly(el).getStyle("position") == "absolute";
@@ -1522,7 +1522,7 @@
 
             if (Ext.isGecko) {
                 pe = fly(p);
-                
+
                 var bt = parseInt(pe.getStyle("borderTopWidth"), 10) || 0;
                 var bl = parseInt(pe.getStyle("borderLeftWidth"), 10) || 0;
 
@@ -1536,7 +1536,7 @@
                     y += bt;
                 }
             }
-*/            
+*/
             p = p.offsetParent;
         }
 /*
@@ -1559,21 +1559,21 @@
             }
             p = p.parentNode;
         }
-*/        
+*/
         return [x, y];
     };
-	
+
 	var eventToModule = {
 		"DOMFocusIn":"UIEvent", "DOMFocusOut":"UIEvent", "DOMActivate":"UIEvent",
-		
+
 		"mousedown":"MouseEvent","mouseup":"MouseEvent","mouseover":"MouseEvent",
 		"mousemove":"MouseEvent","mouseout":"MouseEvent", "click":"MouseEvent",
-		
+
 		"DOMSubtreeModified":"MutationEvent","DOMNodeInserted":"MutationEvent",
 		"DOMNodeRemoved":"MutationEvent","DOMNodeRemovedFromDocument":"MutationEvent",
 		"DOMNodeInsertedIntoDocument":"MutationEvent","DOMAttrModified":"MutationEvent",
 		"DOMCharacterDataModified":"MutationEvent",
-		
+
 		"load":"Event", "unload":"Event", "resize":"Event", "scroll":"Event",
 		"abort":"Event", "error":"Event", "select":"Event",
 		"change":"Event", "submit":"Event",
@@ -1581,7 +1581,7 @@
 
 
 		"":"Events"
-	};	
+	};
 	/**
 	 */
 	function sendEvent(doc, target, ename, props) {
@@ -1593,13 +1593,13 @@
 			var e = doc.createEventObject();
 		}
 		else throw new ExampleException("No support for synthetic events");
-		
+
 		for(var n in props) e[n] = props[n];;
-		
+
 		if (target.dispatchEvent) target.dispatchEvent(e); //DOM
 		else if (target.fireEvent) target.fireEvent("on"+ename,e); //IE
 	}
-	
+
 	// adopted from the script.actulo.us/unittest.js
 	function simulateMouse(doc,element,eventName, props) {
 		var options = {
@@ -1612,7 +1612,7 @@
 
 		if (doc.createEventObject) { // IE
 			options.clientX = options.pointerX;
-			options.clientY = options.pointerY;			
+			options.clientY = options.pointerY;
 			var e = doc.createEventObject();
 			for(var n in props) e[n] = options[n];
 			element.fireEvent("on"+eventName,e)
@@ -1632,7 +1632,7 @@
 		}
 		else throw new ExampleException("No support for synthetic events");
 	}
-	
+
 	function simulateKey(doc, element, eventName, props) {
 		var options = {
 			keyCode:0, charCode:0,
@@ -1671,7 +1671,7 @@
 		}
 		else throw new ExampleException("No support for synthetic events");
 	}
-	
+
 	ElementSubject.prototype.click = function() {
 		simulateMouse(this.doc,this.target,"mouseover",{relatedTarget:this.doc.body});
 		simulateMouse(this.doc,this.target,"mousedown",{});
@@ -1681,7 +1681,7 @@
 		simulateMouse(this.doc,this.target,"mouseout",{relatedTarget:this.doc.body});
 		return this;
 	};
-	
+
 	ElementSubject.prototype.dblclick = function() {
 		simulateMouse(this.doc,this.target,"mouseover",{relatedTarget:this.doc.body});
 		simulateMouse(this.doc,this.target,"mousedown",{});
@@ -1694,7 +1694,7 @@
 		simulateMouse(this.doc,this.target,"mouseout",{relatedTarget:this.doc.body});
 		return this;
 	};
-	
+
 	/**
 	 * Simulate user input to a text input or textarea.
 	 * @param text Input
@@ -1702,7 +1702,7 @@
 	 */
 	ElementSubject.prototype.input_text = function(text,blank) {
 		if (this.inputType != "text" && this.inputType != "textarea") return; // not supported, ignore
-		
+
 		sendEvent(this.doc,this.target,"focus",{});
 		if (Browser.Trident) {//this.target.value = this.target.value + text;
 			var tr = this.target.createTextRange();
@@ -1732,10 +1732,10 @@
 		}
 		//sendEvent(this.doc,this.target,"blur",{});
 		sendEvent(this.doc,this.target,"change",{});
-		
+
 		return this;
 	};
-	
+
 	var stateNames = {
 		'check':'checked',
 		'checked':'checked',
@@ -1744,10 +1744,10 @@
 		'disabled':'disabled',
 		'disable':'disabled'
 	};
-	
+
 	ElementSubject.prototype.input_state = function(state) {
 		if (!this.inputType) return; // only for input fields
-		
+
 		for(var n in state) {
 			var nm = stateNames[n];
 			if (nm) {
@@ -1758,7 +1758,7 @@
 		// this.target.blur();
 		sendEvent(this.doc,this.target,"change",{});
 	};
-	
+
 	ElementSubject.prototype.keystrokes = function(keys) {
 		//TODO support toggle checkbox/radio and textarea
 		sendEvent(this.doc,this.target,"focus",{});
@@ -1777,26 +1777,26 @@
 		}
 		//sendEvent(this.target,"blur",{});
 		sendEvent(this.doc,this.target,"change",{});
-		
+
 		return this;
 	};
-	
+
 	//TODO FocusManager tracking current focus and moving it around
-	
+
 	//TODO .input_select input_check input_unckeck, input_toggle
 	//TODO .keystrokes insert before/after match text
-	
+
 	ElementSubject.prototype.submit = function() {
-		sendEvent(this.doc,this.target,"submit",{});	
+		sendEvent(this.doc,this.target,"submit",{});
 	};
-	
+
 	//TODO select(optionValue,optionCaption)
-	
+
 	ElementSubject.prototype.getValue = function() {
 		if (!this.target || this.target.nodeType != 1 || !this.target.ownerDocument) return null;
 		if (this.inputType == "checkbox") return this.target.checked || this.target.defaultChecked;
 		if (this.inputType == "text" || this.inputType == "textarea") return this.target.value;
-		
+
 		return this.target.innerHTML;
 	};
 
@@ -1820,7 +1820,7 @@
 	 */
 	function value_of(target) {
 		if(specPage.secondPass) return {};
-	
+
 		var subject = new Subject(target);
 		return subject;
 	}
@@ -1830,7 +1830,7 @@
 
 	/**
 	 * Make a subject out of a given element. The subject has extra
-	 * valuators that recognise DOM Elements and value attributes.<b> 
+	 * valuators that recognise DOM Elements and value attributes.<b>
 	 * @param {String|Element} expression element, #id, css selector, or xpath
 	 * @param {Document} doc Defaults to the document of the spec
 	 */
@@ -1841,10 +1841,10 @@
 		if (typeof expression == "string") {
 			var el;
 			if (expression == "") {
-			} 
+			}
 			else if (expression.substring(0,1) == "#" && expression.indexOf(" ") == -1) {
 				el = (doc || value_of_element.defaultDocument).getElementById(expression.substring(1));
-				
+
 			} else {
 				var matches = cssQuery(expression,doc || value_of_element.defaultDocument);
 				if (qualifiers.match !== undefined) {
@@ -1860,7 +1860,7 @@
 							if (!qualifiers.match == t) matches.splice(i,1);
 						}
 					}
-				} 
+				}
 				if (qualifiers.visible) {
 					for(var i=matches.length-1;i>=0;--i) {
 						var matched = matches[i];
@@ -1890,11 +1890,11 @@
 	}
 	value_of_element.defaultDocument = specWindow.document;
 	specWindow.value_of_element = value_of_element;
-	
+
 	// -----------------------------------------------------------------------
 	// main query function
 	// -----------------------------------------------------------------------
-	
+
 	var $COMMA = /\s*,\s*/;
 	var cssQuery = function($selector, $$from) {
 	try {
@@ -1940,15 +1940,15 @@
 		cssQuery.error = $error;
 		return [];
 	}};
-	
+
 	// -----------------------------------------------------------------------
 	// public interface
 	// -----------------------------------------------------------------------
-	
+
 	cssQuery.toString = function() {
 		return "function cssQuery() {\n  [version " + version + "]\n}";
 	};
-	
+
 	// caching
 	var cache = {};
 	cssQuery.caching = false;
@@ -1958,7 +1958,7 @@
 			delete cache[$selector];
 		} else cache = {};
 	};
-	
+
 	// allow extensions
 	var modules = {};
 	var loaded = false;
@@ -1966,26 +1966,26 @@
 		if (loaded) eval("$script=" + String($script));
 		modules[$name] = new $script();;
 	};
-	
+
 	// hackery
 	cssQuery.valueOf = function($code) {
 		return $code ? eval($code) : this;
 	};
-	
+
 	// -----------------------------------------------------------------------
 	// declarations
 	// -----------------------------------------------------------------------
-	
+
 	var selectors = {};
 	var pseudoClasses = {};
 	// a safari bug means that these have to be declared here
 	var AttributeSelector = {match: /\[([\w-]+(\|[\w-]+)?)\s*(\W?=)?\s*([^\]]*)\]/};
 	var attributeSelectors = [];
-	
+
 	// -----------------------------------------------------------------------
 	// selectors
 	// -----------------------------------------------------------------------
-	
+
 	// descendant selector
 	selectors[" "] = function($results, $from, $tagName, $namespace) {
 		// loop through current selection
@@ -2000,14 +2000,14 @@
 			}
 		}
 	};
-	
+
 	// ID selector
 	selectors["#"] = function($results, $from, $id) {
 		// loop through current selection and check ID
 		var $element, j;
 		for (j = 0; ($element = $from[j]); j++) if ($element.id == $id) $results.push($element);
 	};
-	
+
 	// class selector
 	selectors["."] = function($results, $from, $className) {
 		// create a RegExp version of the class
@@ -2017,7 +2017,7 @@
 		for (i = 0; ($element = $from[i]); i++)
 			if ($className.test($element.className)) $results.push($element);
 	};
-	
+
 	// pseudo-class selector
 	selectors[":"] = function($results, $from, $pseudoClass, $arguments) {
 		// retrieve the cssQuery pseudo-class function
@@ -2027,55 +2027,55 @@
 			// if the cssQuery pseudo-class function returns "true" add the element
 			if ($test($element, $arguments)) $results.push($element);
 	};
-	
+
 	// -----------------------------------------------------------------------
 	// pseudo-classes
 	// -----------------------------------------------------------------------
-	
+
 	pseudoClasses["link"] = function($element) {
 		var $document = getDocument($element);
 		if ($document.links) for (var i = 0; i < $document.links.length; i++) {
 			if ($document.links[i] == $element) return true;
 		}
 	};
-	
+
 	pseudoClasses["visited"] = function($element) {
 		// can't do this without jiggery-pokery
 	};
-	
+
 	// -----------------------------------------------------------------------
 	// DOM traversal
 	// -----------------------------------------------------------------------
-	
+
 	// IE5/6 includes comments (LOL) in it's elements collections.
 	// so we have to check for this. the test is tagName != "!". LOL (again).
 	var thisElement = function($element) {
 		return ($element && $element.nodeType == 1 && $element.tagName != "!") ? $element : null;
 	};
-	
+
 	// return the previous element to the supplied element
 	//  previousSibling is not good enough as it might return a text or comment node
 	var previousElementSibling = function($element) {
 		while ($element && ($element = $element.previousSibling) && !thisElement($element)) continue;
 		return $element;
 	};
-	
+
 	// return the next element to the supplied element
 	var nextElementSibling = function($element) {
 		while ($element && ($element = $element.nextSibling) && !thisElement($element)) continue;
 		return $element;
 	};
-	
+
 	// return the first child ELEMENT of an element
 	//  NOT the first child node (though they may be the same thing)
 	var firstElementChild = function($element) {
 		return thisElement($element.firstChild) || nextElementSibling($element.firstChild);
 	};
-	
+
 	var lastElementChild = function($element) {
 		return thisElement($element.lastChild) || previousElementSibling($element.lastChild);
 	};
-	
+
 	// return child elements of an element (not child nodes)
 	var childElements = function($element) {
 		var $childElements = [];
@@ -2086,49 +2086,49 @@
 		}
 		return $childElements;
 	};
-	
+
 	// -----------------------------------------------------------------------
 	// browser compatibility
 	// -----------------------------------------------------------------------
-	
+
 	// all of the functions in this section can be overwritten. the default
 	//  configuration is for IE. The functions below reflect this. standard
 	//  methods are included in a separate module. It would probably be better
 	//  the other way round of course but this makes it easier to keep IE7 trim.
-	
+
 	var isMSIE = true;
-	
+
 	var isXML = function($element) {
 		var $document = getDocument($element);
 		return (typeof $document.mimeType == "unknown") ?
 			/\.xml$/i.test($document.URL) :
 			Boolean($document.mimeType == "XML Document");
 	};
-	
+
 	// return the element's containing document
 	var getDocument = function($element) {
 		return $element.ownerDocument || $element.document;
 	};
-	
+
 	var getElementsByTagName = function($element, $tagName) {
 		return ($tagName == "*" && $element.all) ? $element.all : $element.getElementsByTagName($tagName);
 	};
-	
+
 	var compareTagName = function($element, $tagName, $namespace) {
 		if ($tagName == "*") return thisElement($element);
 		if (!compareNamespace($element, $namespace)) return false;
 		if (!isXML($element)) $tagName = $tagName.toUpperCase();
 		return $element.tagName == $tagName;
 	};
-	
+
 	var compareNamespace = function($element, $namespace) {
 		return !$namespace || ($namespace == "*") || ($element.scopeName == $namespace);
 	};
-	
+
 	var getTextContent = function($element) {
 		return $element.innerText;
 	};
-	
+
 	function _msie_selectById($results, $from, id) {
 		var $match, i, j;
 		for (i = 0; i < $from.length; i++) {
@@ -2143,7 +2143,7 @@
 		}
 		return $results;
 	};
-	
+
 	// for IE5.0
 	if (![].push) Array.prototype.push = function() {
 		for (var i = 0; i < arguments.length; i++) {
@@ -2151,11 +2151,11 @@
 		}
 		return this.length;
 	};
-	
+
 	// -----------------------------------------------------------------------
 	// query support
 	// -----------------------------------------------------------------------
-	
+
 	// select a set of matching elements.
 	// "from" is an array of elements.
 	// "token" is a character representing the type of filter
@@ -2175,11 +2175,11 @@
 		}
 		return $results;
 	};
-	
+
 	// -----------------------------------------------------------------------
 	// parsing
 	// -----------------------------------------------------------------------
-	
+
 	// convert css selectors to a stream of tokens and filters
 	//  it's not a real stream. it's just an array of strings.
 	var $STANDARD_SELECT = /^[^\s>+~]/;
@@ -2188,7 +2188,7 @@
 		if ($STANDARD_SELECT.test($selector)) $selector = " " + $selector;
 		return $selector.match($$STREAM) || [];
 	};
-	
+
 	var $WHITESPACE = /\s*([\s>+~(),]|^|$)\s*/g;
 	var $IMPLIED_ALL = /([\s>+~,]|[^(]\+|^)([#.:@])/g;
 	var parseSelector = function($selector) {
@@ -2198,7 +2198,7 @@
 		// e.g. ".class1" --> "*.class1"
 		.replace($IMPLIED_ALL, "$1*$2");
 	};
-	
+
 	var Quote = {
 		toString: function() {return "'"},
 		match: /^('[^']*')|("[^"]*")$/,
@@ -2212,50 +2212,50 @@
 			return this.test($string) ? $string.slice(1, -1) : $string;
 		}
 	};
-	
+
 	var getText = function($text) {
 		return Quote.remove($text);
 	};
-	
+
 	var $ESCAPE = /([\/()[\]?{}|*+-])/g;
 	function regEscape($string) {
 		return $string.replace($ESCAPE, "\\$1");
 	};
-	
+
 	cssQuery.addModule("css-standard", function() { // override IE optimisation
-	
+
 	// cssQuery was originally written as the CSS engine for IE7. It is
 	//  optimised (in terms of size not speed) for IE so this module is
 	//  provided separately to provide cross-browser support.
-	
+
 	// -----------------------------------------------------------------------
 	// browser compatibility
 	// -----------------------------------------------------------------------
-	
+
 	// sniff for Win32 Explorer
 	isMSIE = Browser.TridentWin32;
-	
+
 	if (!isMSIE) {
 		getElementsByTagName = function($element, $tagName, $namespace) {
 			return $namespace ? $element.getElementsByTagNameNS("*", $tagName) :
 				$element.getElementsByTagName($tagName);
 		};
-	
+
 		compareNamespace = function($element, $namespace) {
 			return !$namespace || ($namespace == "*") || ($element.prefix == $namespace);
 		};
-	
+
 		isXML = document.contentType ? function($element) {
 			return /xml/i.test(getDocument($element).contentType);
 		} : function($element) {
 			return getDocument($element).documentElement.tagName != "HTML";
 		};
-	
+
 		getTextContent = function($element) {
 			// mozilla || opera || other
 			return $element.textContent || $element.innerText || _getTextContent($element);
 		};
-	
+
 		function _getTextContent($element) {
 			var $textContent = "", $node, i;
 			for (i = 0; ($node = $element.childNodes[i]); i++) {

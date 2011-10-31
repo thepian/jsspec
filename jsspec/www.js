@@ -122,7 +122,7 @@ LANGUAGES.css = {
     C_BLOCK_COMMENT_MODE,
     {
       className: 'value',
-      begin: ':', end: ';', endsWithParent: true, 
+      begin: ':', end: ';', endsWithParent: true,
       excludeBegin: true, excludeEnd: true
     }
   ]
