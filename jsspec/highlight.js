@@ -1,5 +1,5 @@
-/* 
-Syntax highlighting with language autodetection.  
+/*
+Syntax highlighting with language autodetection.
 http://softwaremaniacs.org/soft/highlight/
 */
 
@@ -78,7 +78,7 @@ function Highlighter(language_name, value) {
     }//for
     return null;
   }//subMode
-  
+
   function endOfMode(mode_index, lexem) {
     if (modes[mode_index].end && modes[mode_index].endRe.test(lexem))
       return 1;
@@ -88,7 +88,7 @@ function Highlighter(language_name, value) {
     }//if
     return 0;
   }//endOfMode
-  
+
   function isIllegal(lexem) {
     if (!modes[modes.length - 1].illegalRe)
       return false;
@@ -98,25 +98,25 @@ function Highlighter(language_name, value) {
   function eatModeChunk(value, index) {
     if (!modes[modes.length - 1].terminators) {
       var terminators = [];
-      
+
       if (modes[modes.length - 1].contains)
         for (var key in language.modes) {
           if (contains(modes[modes.length - 1].contains, language.modes[key].className) &&
               !contains(terminators, language.modes[key].begin))
             terminators[terminators.length] = language.modes[key].begin;
         }//for
-      
+
       var mode_index = modes.length - 1;
       do {
         if (modes[mode_index].end && !contains(terminators, modes[mode_index].end))
           terminators[terminators.length] = modes[mode_index].end;
         mode_index--;
       } while (modes[mode_index + 1].endsWithParent);
-      
+
       if (modes[modes.length - 1].illegal)
         if (!contains(terminators, modes[modes.length - 1].illegal))
           terminators[terminators.length] = modes[modes.length - 1].illegal;
-      
+
       var terminator_re = '(' + terminators[0];
       for (var i = 0; i < terminators.length; i++)
         terminator_re += '|' + terminators[i];
@@ -125,18 +125,18 @@ function Highlighter(language_name, value) {
     }//if
     value = value.substr(index);
     var match = modes[modes.length - 1].terminators.exec(value);
-    if (!match) 
+    if (!match)
       return [value, '', true];
     if (match.index == 0)
       return ['', match[0], false];
     else
       return [value.substr(0, match.index), match[0], false];
   }//eatModeChunk
-  
+
   function escape(value) {
     return value.replace(/&/gm, '&amp;').replace(/</gm, '&lt;').replace(/>/gm, '&gt;');
   }//escape
-  
+
   function keywordMatch(mode, match) {
     var match_str = language.case_insensitive ? match[0].toLowerCase() : match[0]
     for (var className in mode.keywordGroups) {
@@ -146,7 +146,7 @@ function Highlighter(language_name, value) {
     }//for
     return false;
   }//keywordMatch
-  
+
   function processKeywords(buffer) {
     var mode = modes[modes.length - 1];
     if (!mode.keywords || !mode.lexems)
@@ -181,7 +181,7 @@ function Highlighter(language_name, value) {
     result += escape(buffer.substr(last_index, buffer.length - last_index));
     return result;
   }//processKeywords
-  
+
   function processModeInfo(buffer, lexem, end) {
     if (end) {
       result += processKeywords(modes[modes.length - 1].buffer + buffer);
@@ -230,11 +230,11 @@ function Highlighter(language_name, value) {
       var mode_info = eatModeChunk(value, index);
       processModeInfo(mode_info[0], mode_info[1], mode_info[2]);
       index += mode_info[0].length + mode_info[1].length;
-    } while (!mode_info[2]); 
+    } while (!mode_info[2]);
     if(modes.length > 1)
       throw 'Illegal';
   }//highlight
-  
+
   this.language_name = language_name;
   var language = LANGUAGES[language_name];
   var modes = [language.defaultMode];
@@ -305,7 +305,7 @@ function highlightLanguage(block, language) {
   var environment = block.parentNode.parentNode;
   environment.replaceChild(container.firstChild, block.parentNode);
 }//highlightLanguage
-    
+
 function highlightAuto(block) {
   var result = null;
   var language = '';
@@ -320,7 +320,7 @@ function highlightAuto(block) {
       result = highlight;
     }//if
   }//for
-  
+
   if(result) {
     // See these 4 lines? This is IE's notion of "block.innerHTML = result". Love this browser :-/
     var container = document.createElement('div');
@@ -363,7 +363,7 @@ function compileKeywords() {
       }//for
     }//if
   }//compileModeKeywords
-  
+
   for (var i in LANGUAGES) {
     var language = LANGUAGES[i];
     compileModeKeywords(language.defaultMode);

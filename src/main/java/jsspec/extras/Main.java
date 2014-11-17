@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at 
+// You may obtain a copy of the License at
 // http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -37,15 +37,15 @@ import java.util.StringTokenizer;
  * start.jar". The behaviour of Main is controlled by the "org/mortbay/start/start.config" file
  * obtained as a resource or file. This can be overridden with the START system property. The
  * format of each line in this file is:
- * 
+ *
  * <PRE>
- * 
+ *
  * SUBJECT [ [!] CONDITION [AND|OR] ]*
- * 
+ *
  * </PRE>
- * 
+ *
  * where SUBJECT:
- * 
+ *
  * <PRE>
  * ends with ".class" is the Main class to run.
  * ends with ".xml" is a configuration file for the command line
@@ -54,23 +54,23 @@ import java.util.StringTokenizer;
  * Containing = are used to assign system properties.
  * all other subjects are treated as files to be added to the classpath.
  * </PRE>
- * 
+ *
  * Subjects may include system properties with $(propertyname) syntax. File subjects starting with
  * "/" are considered absolute, all others are relative to the home directory.
  * <P>
  * CONDITION is one of:
- * 
+ *
  * <PRE>
- * 
+ *
  * always
  * never
- * available package.class 
- * java OPERATOR n.n 
+ * available package.class
+ * java OPERATOR n.n
  * nargs OPERATOR n
  * OPERATOR := one of "<",">"," <=",">=","==","!="
- * 
+ *
  * </PRE>
- * 
+ *
  * CONTITIONS can be combined with AND OR or !, with AND being the assume operator for a list of
  * CONDITIONS. Classpath operations are evaluated on the fly, so once a class or jar is added to
  * the classpath, subsequent available conditions will see that class. The system parameter
@@ -79,7 +79,7 @@ import java.util.StringTokenizer;
  * local port to stop the server. The default port can be set with the STOP.PORT system property (a
  * port of < 0 disables the stop mechanism). If the STOP.KEY system property is set, then a random
  * key is generated and written to stdout. This key must be passed to the stop.jar.
- * 
+ *
  * @author Jan Hlavaty (hlavac@code.cz)
  * @author Greg Wilkins
  */
@@ -93,7 +93,7 @@ public class Main
     private boolean _version=false;
 
     public static void main(String[] args)
-    { 
+    {
     	System.out.println("JSSpec Extras Starting");
         try
         {

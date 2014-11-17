@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at 
+// You may obtain a copy of the License at
 // http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,21 +18,21 @@ package jsspec.extras;
  * JDK 1.1 compatible.
  * @author Jan Hlavat�
  */
- 
+
 public class Version {
- 
+
     int _version = 0;
     int _revision = 0;
     int _subrevision = 0;
     String _suffix = "";
-    
+
     public Version() {
     }
-    
+
     public Version(String version_string) {
         parse(version_string);
     }
-    
+
     /**
      * parses version string in the form version[.revision[.subrevision[extension]]]
      * into this instance.
@@ -67,7 +67,7 @@ public class Version {
             _suffix = version_string.substring(pos);
         }
     }
-    
+
     /**
      * @return string representation of this version
      */
@@ -81,7 +81,7 @@ public class Version {
         sb.append(_suffix);
         return sb.toString();
     }
-    
+
     // java.lang.Comparable is Java 1.2! Cannot use it
     /**
      * Compares with other version. Does not take extension into account,
@@ -100,7 +100,7 @@ public class Version {
         if (this._subrevision > other._subrevision) return 1;
         return 0;
     }
-    
+
     /**
      * Check whether this verion is in range of versions specified
      */
